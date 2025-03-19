@@ -13,7 +13,7 @@ This template should help get you started developing with Vue 3 in Vite. <br>
 
 #### 🎨 제작자 및 제작에 도움을 주신분들
 
-| 대표 | 디자인 | client | server | database |
+| 제작자 | 디자인 | client | server | database |
 |-----|--------|--------|--------|----------|
 | <img src="https://github.com/user-attachments/assets/f903df15-00be-4558-ab20-ca3354d379bc" alt="대표" width="130" height="170"> | <img src="https://github.com/user-attachments/assets/ff42ca7a-01b4-4518-9369-d768d1e3f3f1" alt="디자인" width="130" height="130" align="center"> | <img src="https://github.com/user-attachments/assets/790f7a1d-466f-4893-bf12-e55a40904087" alt="client" width="130" height="140"> | <img src="https://github.com/user-attachments/assets/790f7a1d-466f-4893-bf12-e55a40904087" alt="server" width="130" height="140"> | <img src="www.vuejs.org" alt="database" width="130" height="140"> 
 | 나 | vuetify 공식문서 (감사합니다 진짜로) | chatGPT (정말 열심히 돌림) | chatGPT (이것도 열심히 돌림) | 안했는데;
