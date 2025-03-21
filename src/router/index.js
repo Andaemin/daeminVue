@@ -10,13 +10,13 @@ const router = createRouter({
       redirect: '/join',
     },
     {
-      path: '/main/:username',
+      path: '/main/:name',
       name: 'home',
       component: HomeView,
       props: true,
     },
     {
-      path: '/about/:username',
+      path: '/about/:name',
       name: 'about',
       component: () => import('../views/AboutView.vue'),
       props: true,

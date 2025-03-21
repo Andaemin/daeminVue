@@ -1,4 +1,8 @@
-/* 기본 스타일 리셋 (reset.css 역할) */
+@font-face {
+  font-family: fac;
+  src: url();
+}
+
 * {
   margin: 0;
   padding: 0;
@@ -9,14 +13,12 @@ body {
   font-family: 'Arial', sans-serif;
   line-height: 1.6;
   background-color: #f8f8f8;
-  color: #333;
 }
 
 a {
   text-decoration: none;
-  color: inherit;
 }
 
 .red-fonts {
-  color: var(--v-basic-base);
+  color: var(--v-basic-base) !important;
 }
