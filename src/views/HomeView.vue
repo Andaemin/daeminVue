@@ -1,5 +1,6 @@
 <script setup>
 import { useUserStore } from '@/store/UserStore'
+import SideNav from '@/layouts/SideNav.vue'
 const userStore = useUserStore()
 </script>
 
@@ -12,5 +13,6 @@ const userStore = useUserStore()
       어머 {{ userStore.username }} 님?! 여기에 와주신건가요 너무 반가워요?
     </h1>
     <h1 v-else>{{ userStore.username }} 님 어서오세요</h1>
+    <SideNav />
   </v-container>
 </template>
