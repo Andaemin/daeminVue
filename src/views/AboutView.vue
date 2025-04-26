@@ -1,8 +1,10 @@
 <script setup>
 import BasicNav from '../components/BasicNav.vue'
 import { useUserStore } from '@/store/UserStore'
+
 const userStore = useUserStore()
 </script>
+
 <template>
   <v-container>
     <BasicNav />

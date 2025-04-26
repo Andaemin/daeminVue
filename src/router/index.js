@@ -1,5 +1,6 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import HomeView from '../views/HomeView.vue'
+import AboutView from '../views/AboutView.vue'
 import JoinView from '@/views/JoinView.vue'
 
 const router = createRouter({
@@ -10,21 +11,21 @@ const router = createRouter({
       redirect: '/join',
     },
     {
+      path: '/join',
+      name: 'join',
+      component: JoinView,
+      props: true,
+    },
+    {
       path: '/main/:name',
       name: 'home',
-      component: HomeView,
+      component: () => import('../views/HomeView.vue'),
       props: true,
     },
     {
       path: '/about/:name',
       name: 'about',
       component: () => import('../views/AboutView.vue'),
-      props: true,
-    },
-    {
-      path: '/join',
-      name: 'join',
-      component: JoinView,
       props: true,
     },
   ],
