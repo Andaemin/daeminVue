@@ -2,6 +2,7 @@
 import { ref } from 'vue'
 import { useRouter } from 'vue-router'
 import { useUserStore } from '@/store/UserStore'
+import submitBtn from '@/components/base/submitBtn.vue'
 
 const username = ref('')
 const router = useRouter()
@@ -20,7 +21,7 @@ const join = () => {
 
 <template>
   <v-container>
-    <div class="join">
+    <v-card class="pa-10">
       <h1>vue-test feat</h1>
       <v-text-field
         label="Username"
@@ -28,7 +29,8 @@ const join = () => {
         placeholder="이름을 입력해주세요. (비워두면 'default')"
       />
       <v-row class="d-flex align-center">
-        <v-btn @click="join" class="ma-2">Select</v-btn>
+        <v-btn @click="join()" class="ma-2">Select</v-btn>
+        <submitBtn variant="elevated" />
         <div v-if="['기본', 'default'].includes(username)" class="ma-2">
           <p class="red-fonts">정말 '기본' 으로 하시려구요..?</p>
         </div>
@@ -39,6 +41,6 @@ const join = () => {
           </h1>
         </div>
       </v-row>
-    </div>
+    </v-card>
   </v-container>
 </template>
