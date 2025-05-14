@@ -2,7 +2,7 @@
 import { ref } from 'vue'
 import { useRouter } from 'vue-router'
 import { useUserStore } from '@/store/UserStore'
-import submitBtn from '@/components/base/submitBtn.vue'
+import submitBtn from '@/components/base/SubmitBtn.vue'
 
 const username = ref('')
 const router = useRouter()
@@ -18,7 +18,6 @@ const join = () => {
   })
 }
 </script>
-
 <template>
   <v-container>
     <v-card class="pa-10">
