@@ -2,10 +2,9 @@
 
 <template>
   <v-app>
-    <div>
+    <v-container>
       <router-link to="/join"></router-link>
-      <!-- <router-link to="/About"></router-link> -->
-    </div>
+    </v-container>
     <router-view />
   </v-app>
 </template>
