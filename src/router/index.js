@@ -28,6 +28,12 @@ const router = createRouter({
       component: () => import('../views/AboutView.vue'),
       props: true,
     },
+    {
+      path: '/scroll',
+      name: 'scroll',
+      component: () => import('../views/ScrollView.vue'),
+      props: true,
+    },
   ],
 })
 

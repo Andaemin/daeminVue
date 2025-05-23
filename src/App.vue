@@ -3,9 +3,8 @@
 <template>
   <v-app>
     <v-container>
-      <router-link to="/join"></router-link>
+      <router-view />
     </v-container>
-    <router-view />
   </v-app>
 </template>
 

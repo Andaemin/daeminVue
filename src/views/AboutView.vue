@@ -9,7 +9,7 @@ const userStore = useUserStore()
   <v-container>
     <BasicNav />
     <div class="about">
-      <h1>{{ userStore.username }} This is an about page</h1>
+      <h1>{{ userStore.username }} props 테스트용 .</h1>
       <router-link :to="{ name: 'home', params: { username: userStore.username || 'default' } }">
         <v-btn color="primary"> 이동 </v-btn>
       </router-link>
