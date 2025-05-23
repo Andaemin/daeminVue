@@ -4,6 +4,7 @@ import 'vuetify/styles'
 import vuetify from './plugins/vuetify'
 import router from './router'
 import { createPinia } from 'pinia'
+import './assets/base.css'
 
 const app = createApp(App)
 

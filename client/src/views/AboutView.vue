@@ -1,5 +1,4 @@
 <script setup>
-import BasicNav from '../components/BasicNav.vue'
 import { useUserStore } from '@/store/UserStore'
 
 const userStore = useUserStore()
@@ -7,7 +6,6 @@ const userStore = useUserStore()
 
 <template>
   <v-container>
-    <BasicNav />
     <div class="about">
       <h1>{{ userStore.username }} props 테스트용 .</h1>
       <router-link :to="{ name: 'home', params: { username: userStore.username || 'default' } }">

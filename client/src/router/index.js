@@ -1,7 +1,7 @@
 import { createRouter, createWebHistory } from 'vue-router'
+import JoinView from '@/views/JoinView.vue'
 import HomeView from '../views/HomeView.vue'
 import AboutView from '../views/AboutView.vue'
-import JoinView from '@/views/JoinView.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -17,21 +17,15 @@ const router = createRouter({
       props: true,
     },
     {
-      path: '/main/:name',
+      path: '/info/',
       name: 'home',
       component: () => import('../views/HomeView.vue'),
       props: true,
     },
     {
-      path: '/about/:name',
+      path: '/about/',
       name: 'about',
       component: () => import('../views/AboutView.vue'),
-      props: true,
-    },
-    {
-      path: '/scroll',
-      name: 'scroll',
-      component: () => import('../views/ScrollView.vue'),
       props: true,
     },
   ],

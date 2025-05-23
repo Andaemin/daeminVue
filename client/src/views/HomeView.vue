@@ -1,7 +1,6 @@
 <script setup>
 import { useUserStore } from '@/store/UserStore'
 import SideNav from '@/layouts/SideNav.vue'
-
 const userStore = useUserStore()
 </script>
 

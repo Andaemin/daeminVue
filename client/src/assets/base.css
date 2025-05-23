@@ -22,3 +22,20 @@ a {
 .red-fonts {
   color: var(--v-basic-base) !important;
 }
+
+b.green {
+  color: #57c675;
+}
+
+b.blue {
+  color: #6fb8f4;
+}
+
+b.linker a {
+  color: #297ae5;
+  text-decoration: none;
+}
+
+.p5-wrap > * {
+  padding: 15px;
+}
