@@ -2,7 +2,7 @@
 
 <template>
   <v-app>
-    <router-view />
+    <router-view class="w-100" />
   </v-app>
 </template>
 

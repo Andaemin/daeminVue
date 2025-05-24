@@ -63,7 +63,7 @@ onMounted(() => {
       </v-row>
       <v-card-text class="gsapBox"
         >로그인이 필요하신가요?
-        <b class="linker"><router-link :to="{ name: 'home' }">로그인하기</router-link></b>
+        <b class="linker"><router-link :to="{ name: 'login' }">로그인하기</router-link></b>
       </v-card-text>
     </v-sheet>
   </v-container>

@@ -9,6 +9,7 @@ export default createVuetify({
         colors: {
           basic: '#D32F2F',
           primary: '#3f51b5',
+          cafnavy: '#3f51b5',
         },
       },
     },

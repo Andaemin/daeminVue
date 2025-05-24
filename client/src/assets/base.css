@@ -7,12 +7,15 @@
   margin: 0;
   padding: 0;
   box-sizing: border-box;
+  align-items: center;
 }
 
 body {
   font-family: 'Arial', sans-serif;
   line-height: 1.6;
-  background-color: #f8f8f8;
+  background-color: #ffffff;
+}
+div {
 }
 
 a {
@@ -38,4 +41,8 @@ b.linker a {
 
 .p5-wrap > * {
   padding: 15px;
+}
+
+.bg-caf-navy {
+  background-color: #2c3e50;
 }
