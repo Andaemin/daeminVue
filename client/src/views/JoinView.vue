@@ -49,6 +49,8 @@ onMounted(() => {
       <v-sheet class="gsapBox">
         <v-img :width="120" :height="120" :src="sproutcreature"></v-img>
       </v-sheet>
+
+      <!-- 나중에 컴포넌트 따로 뺼것 -->
       <v-row class="gsapBox">
         <v-card max-width="400" height="100" link :to="{ name: 'home' }" class="ma-5 card-hover">
           <v-card-title>
