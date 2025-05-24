@@ -1,10 +1,10 @@
-import usersModel from "../models/users.js";
+// import usersModel from "../models/users.js";
 
-const userController = {
-  getUsers: (req, res, next) => {
-    const users = usersModel.getUsers();
-    res.send(users);
-  },
-};
+// const userController = {
+//   getUsers: (req, res, next) => {
+//     const users = usersModel.getUsers();
+//     res.send(users);
+//   },
+// };
 
-export default userController;
+// export default userController;
