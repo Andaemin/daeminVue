@@ -4,14 +4,15 @@ import cookieParser from "cookie-parser";
 import logger from "morgan";
 import { dirname } from "dirname-filename-esm";
 
-// import usersRouter from "./routers/users.js";
+import usersRouter from "./routers/users.js";
 import registerRouter from "./routers/register.js";
 
 // app
 const app = express();
+const __dirname = dirname(import.meta);
 
 // view engine setup
-app.set("views", path.join(dirname(import.meta), "views"));
+app.set("views", path.join(__dirname, "views"));
 app.set("view engine", "ejs");
 
 // plugins
@@ -19,7 +20,8 @@ app.use(logger(process.env.NODE_ENV === "production" ? "common" : "dev"));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
-app.use(express.static(path.join(dirname(import.meta), "../", "public")));
+app.use(express.static(path.join(__dirname, "../", "public")));
+// app.use(express.static(path.join(dirname(import.meta), "../", "public")));
 
 // routers
 app.get("/api", (req, res) => {
