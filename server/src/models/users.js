@@ -1,3 +1,4 @@
+// 걍 기본 학습용 도멜 (기본으로 생성된것)
 // const usersModel = new (class UsersModel {
 //   #users = [
 //     { name: "tj", title: "the man who created Express.js", github: "https://github.com/tj" },
@@ -38,7 +39,7 @@ export const User = sequelize.define("User", {
   nickname: {
     type: DataTypes.STRING,
   },
-  agreePersonalInfo: {
+  agreeDongil: {
     type: DataTypes.BOOLEAN,
     allowNull: false,
     defaultValue: false,

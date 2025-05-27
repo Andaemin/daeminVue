@@ -5,7 +5,7 @@
 // import SubmitBtn from '@/components/base/SubmitBtn.vue'
 import sproutcreature from '@/assets/sproutcreature.png'
 import cafverseLogo from '@/assets/cafverse_logo.png'
-import { onMounted, ref } from 'vue'
+import { onMounted } from 'vue'
 import { gsap } from 'gsap'
 
 // const mainRef = ref()
