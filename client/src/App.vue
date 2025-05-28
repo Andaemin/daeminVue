@@ -1,4 +1,6 @@
-<script setup></script>
+<script setup>
+// import HeaderNav from './components/layouts/HeaderNav.vue'
+</script>
 
 <template>
   <v-app>
