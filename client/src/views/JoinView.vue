@@ -3,7 +3,7 @@
 // import { useRouter } from 'vue-router'
 // import { useUserStore } from '@/store/UserStore'
 // import SubmitBtn from '@/components/base/SubmitBtn.vue'
-import sproutcreature from '@/assets/sproutcreature.png'
+import sproutcreature from '@/assets/sproutCreature_shadow.png'
 import cafverseLogo from '@/assets/cafverse_logo.png'
 import { onMounted } from 'vue'
 import { gsap } from 'gsap'
@@ -27,9 +27,9 @@ onMounted(() => {
   <v-container class="d-flex justify-center align-center h-screen">
     <v-sheet class="p5-wrap d-flex justify-center align-center d-flex flex-column h-50">
       <v-sheet class="gsapBox">
-        <h1 class="text-h2 font-weight-black">Welcome To</h1>
+        <h1 class="text-h3 font-weight-black">Welcome To</h1>
         <v-sheet class="d-flex align-center">
-          <h1 class="text-h2 font-weight-black">
+          <h1 class="text-h3 font-weight-black">
             <b class="green">CaF</b><b class="blue">verse</b>!
           </h1>
           <v-img :width="80" :height="80" :src="cafverseLogo" />
@@ -37,17 +37,21 @@ onMounted(() => {
       </v-sheet>
       <v-sheet class="gsapBox">
         <v-card-text class="text-h5 pa-0">
-          우리의 <b class="green font-weight-black" style="font-size: 28px">피조물</b>을 보기위해
-          방문한 여러분을 환영해요!
+          <b
+            >우리의 <b class="green font-weight-black" style="font-size: 28px">피조물</b>을 보기위해
+            방문한 여러분을 환영해요!</b
+          >
         </v-card-text>
         <v-card-text class="text-h5 pa-0">
-          당신을 환영하는
-          <b class="blue font-weight-black" style="font-size: 28px">SproutCreature</b>와 함께 같이
-          시작해봐요!
+          <b
+            >당신을 환영하는
+            <b class="blue font-weight-black" style="font-size: 28px">SproutCreature</b>와 함께 같이
+            시작해봐요!</b
+          >
         </v-card-text>
       </v-sheet>
       <v-sheet class="gsapBox">
-        <v-img :width="120" :height="120" :src="sproutcreature"></v-img>
+        <v-img :width="200" :height="200" :src="sproutcreature"></v-img>
       </v-sheet>
 
       <!-- 나중에 컴포넌트 따로 뺼것 -->

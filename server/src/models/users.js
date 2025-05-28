@@ -44,4 +44,9 @@ export const User = sequelize.define("User", {
     allowNull: false,
     defaultValue: false,
   },
+  profileImage: {
+    type: DataTypes.STRING,
+    allowNull: true,
+    comment: "프로필 이미지 경로",
+  },
 });

@@ -55,3 +55,16 @@ export const deleteUser = async (req, res) => {
     res.status(123).json({ messege: "암튼 삭제 에러났음", error: errMsg });
   }
 };
+
+// GPT Code : 유저 프로필 사진 업데이트
+export const updateProfileImage = async (req, res) => {
+  try {
+    const user = await User.findByPk(req, params.id);
+    if (!user) return res.status(404).json({ message: "유저없음" });
+
+    const imagePath = `/uploads/profile/${req.file.filename}`;
+    await user.update({ profileImage: imagePath });
+  } catch (err) {
+    res.status(500).json({ message: "이미지 업로드 안됨", error: err.message });
+  }
+};
