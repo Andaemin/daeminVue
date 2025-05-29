@@ -16,7 +16,7 @@ app.set("views", path.join(__dirname, "views"));
 app.set("view engine", "ejs");
 
 // plugins
-app.use(logger(process.env.NODE_ENV === "production" ? "common" : "dev"));
+app.use(logger(process.env.NODE_ENV === "production" ? "common" : "devre"));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());

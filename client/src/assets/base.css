@@ -10,12 +10,40 @@
   align-items: center;
 }
 
-body {
-  font-family: 'Arial', sans-serif;
-  line-height: 1.6;
-  background-color: #ffffff;
+@font-face {
+  font-family: 'NanumSquareNeo';
+  src: url('../assets/fonts/NanumSquareNeo-eHv.ttf') format('truetype');
+  font-weight: bolder;
 }
-div {
+
+@font-face {
+  font-family: 'NanumSquareNeo';
+  src: url('../assets/fonts/NanumSquareNeocBd.ttf') format('truetype');
+  font-weight: bold;
+}
+
+@font-face {
+  font-family: 'NanumSquareRound';
+  src: url('../assets/fonts/NanumSquareRoundR.ttf') format('truetype');
+  font-weight: normal;
+}
+@font-face {
+  font-family: 'NanumSquareRound';
+  src: url('../assets/fonts/NanumSquareRoundEB.ttf') format('truetype');
+  font-weight: bolder;
+}
+@font-face {
+  font-family: 'NanumSquareRound';
+  src: url('../assets/fonts/NanumSquareRoundB.ttf') format('truetype');
+  font-weight: bold;
+}
+
+body {
+  font-family: 'NanumSquareRound', 'NanumSquareNeo', sans-serif;
+}
+
+html * {
+  font-family: 'NanumSquareRound', 'NanumSquareNeo', sans-serif;
 }
 
 a {
@@ -26,15 +54,18 @@ a {
   color: var(--v-basic-base) !important;
 }
 
-b.green {
+span.bold {
+  font-weight: bolder;
+}
+span.green {
   color: #57c675;
 }
 
-b.blue {
+span.blue {
   color: #6fb8f4;
 }
 
-b.linker a {
+span.linker a {
   color: #297ae5;
   text-decoration: none;
 }
@@ -45,4 +76,8 @@ b.linker a {
 
 .bg-caf-navy {
   background-color: #2c3e50;
+}
+
+.bg-caf-none {
+  background-color: none;
 }

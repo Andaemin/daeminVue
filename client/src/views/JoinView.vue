@@ -3,7 +3,7 @@
 // import { useRouter } from 'vue-router'
 // import { useUserStore } from '@/store/UserStore'
 // import SubmitBtn from '@/components/base/SubmitBtn.vue'
-import sproutcreature from '@/assets/sproutCreature_shadow.png'
+import sproutcreature from '@/assets/sproutCreature.png'
 import cafverseLogo from '@/assets/cafverse_logo.png'
 import { onMounted } from 'vue'
 import { gsap } from 'gsap'
@@ -29,24 +29,24 @@ onMounted(() => {
       <v-sheet class="gsapBox">
         <h1 class="text-h3 font-weight-black">Welcome To</h1>
         <v-sheet class="d-flex align-center">
-          <h1 class="text-h3 font-weight-black">
-            <b class="green">CaF</b><b class="blue">verse</b>!
+          <h1 class="text-h3 font-weight-bold">
+            <span class="green">CaF</span><span class="blue">verse</span>!
           </h1>
           <v-img :width="80" :height="80" :src="cafverseLogo" />
         </v-sheet>
       </v-sheet>
       <v-sheet class="gsapBox">
         <v-card-text class="text-h5 pa-0">
-          <b
-            >우리의 <b class="green font-weight-black" style="font-size: 28px">피조물</b>을 보기위해
-            방문한 여러분을 환영해요!</b
+          <span
+            >우리의 <span class="green font-weight-black" style="font-size: 28px">피조물</span>을
+            보기위해 방문한 여러분을 환영해요!</span
           >
         </v-card-text>
         <v-card-text class="text-h5 pa-0">
-          <b
+          <span
             >당신을 환영하는
-            <b class="blue font-weight-black" style="font-size: 28px">SproutCreature</b>와 함께 같이
-            시작해봐요!</b
+            <span class="blue font-weight-black" style="font-size: 28px">SproutCreature</span>와
+            함께 같이 시작해봐요!</span
           >
         </v-card-text>
       </v-sheet>
@@ -56,9 +56,10 @@ onMounted(() => {
 
       <!-- 나중에 컴포넌트 따로 뺼것 -->
       <v-row class="gsapBox">
-        <v-card max-width="400" height="100" link :to="{ name: 'home' }" class="ma-5 card-hover">
-          <v-card-title>
-            <b class="green">CaF</b><b class="blue">Verse</b> 에 대해서 알고싶어요!</v-card-title
+        <v-card max-width="400" height="100" link :to="{ name: 'cafInfo' }" class="ma-5 card-hover">
+          <v-card-title class="font-weight-bolder">
+            <span class="green">CaF</span><span class="blue">Verse</span> 에 대해서
+            알고싶어요!</v-card-title
           >
           <v-card-subtitle>여러 세계관을 알고, CaFverse에 대해서 알려줍니다.</v-card-subtitle>
         </v-card>
@@ -69,7 +70,7 @@ onMounted(() => {
       </v-row>
       <v-card-text class="gsapBox"
         >로그인이 필요하신가요?
-        <b class="linker"><router-link :to="{ name: 'login' }">로그인하기</router-link></b>
+        <span class="linker"><router-link :to="{ name: 'login' }">로그인하기</router-link></span>
       </v-card-text>
     </v-sheet>
   </v-container>

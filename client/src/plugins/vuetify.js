@@ -2,6 +2,13 @@ import { createVuetify } from 'vuetify'
 import 'vuetify/styles'
 
 export default createVuetify({
+  defaults: {
+    global: {
+      style: {
+        fontFamily: 'NanumSquareRound, NanumSquareNeo, sans-serif',
+      },
+    },
+  },
   theme: {
     defaultTheme: 'light',
     themes: {

@@ -3,6 +3,7 @@ import JoinView from '@/views/JoinView.vue'
 import HomeView from '../views/HomeView.vue'
 import AboutView from '../views/AboutView.vue'
 import LoginView from '@/views/LoginView.vue'
+import CafView from '../views/cafView.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -33,6 +34,12 @@ const router = createRouter({
       path: '/login',
       name: 'login',
       component: () => import('../views/LoginView.vue'),
+      props: true,
+    },
+    {
+      path: '/cafInfo',
+      name: 'cafInfo',
+      component: () => import('../views/CafView.vue'),
       props: true,
     },
   ],
