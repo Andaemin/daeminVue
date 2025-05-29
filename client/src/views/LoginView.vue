@@ -3,8 +3,8 @@ import SubmitBtn from '@/components/base/SubmitBtn.vue'
 </script>
 <template>
   <v-container class="d-flex justify-center align-center h-screen bg-caf-navy ma-0" fluid>
-    <v-card class="flex-1 d-flex mb-6 w-66 h-50" color="indigo-darken-3" variant="transparent">
-      <v-sheet class="text-white bg-transparent ma-2 pa-2 me-auto" variant="">
+    <v-card class="d-flex mb-6 w-66 h-50" color="indigo-darken-3" variant="transparent">
+      <v-sheet class="flex-1 text-white bg-transparent ma-2 pa-2 h-100 me-auto" variant="">
         <v-card-title class="text-h4 font-weight-black"
           >CaFverse ID를 입력해주세요 <br />이용을 위해 부탁드려요!</v-card-title
         >
