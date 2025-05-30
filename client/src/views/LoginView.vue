@@ -1,10 +1,15 @@
 <script setup>
 import SubmitBtn from '@/components/base/SubmitBtn.vue'
+import HeaderNav from '@/components/layouts/HeaderNav.vue'
 </script>
 <template>
+  <HeaderNav />
   <v-container class="d-flex justify-center align-center h-screen bg-caf-navy ma-0" fluid>
-    <v-card class="d-flex mb-6 w-66 h-50" color="indigo-darken-3" variant="transparent">
-      <v-sheet class="flex-1 text-white bg-transparent ma-2 pa-2 h-100 me-auto" variant="">
+    <v-card class="d-flex mb-6 w-75 h-50" color="indigo-darken-3" variant="transparent">
+      <v-sheet
+        class="d-flex-column align-center text-white bg-transparent ma-2 pa-2 me-auto"
+        variant=""
+      >
         <v-card-title class="text-h4 font-weight-black"
           >CaFverse ID를 입력해주세요 <br />이용을 위해 부탁드려요!</v-card-title
         >
@@ -14,7 +19,7 @@ import SubmitBtn from '@/components/base/SubmitBtn.vue'
         >
       </v-sheet>
       <v-sheet
-        class="flex-1 ma-2 pa-2 d-flex-column justify-center align-top bg-transparent text-white"
+        class="flex-1 ma-2 pa-2 d-flex-column justify-center align-center bg-transparent text-white"
       >
         <v-text-field class="" label="Username" model-value=" " variant="outlined"></v-text-field>
         <v-text-field
@@ -23,7 +28,7 @@ import SubmitBtn from '@/components/base/SubmitBtn.vue'
           model-value=" "
           variant="outlined"
         ></v-text-field>
-        <SubmitBtn class="font-weight-bold"><slot>Login</slot></SubmitBtn>
+        <SubmitBtn :to="{ name: 'join' }" class="font-weight-bold"><slot>Login</slot></SubmitBtn>
         <v-card-text class="gsapBox">
           뭔데 아직도 계정이 없으세요?
           <span class="linker"

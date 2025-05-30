@@ -1,9 +1,5 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import JoinView from '@/views/JoinView.vue'
-import HomeView from '../views/HomeView.vue'
-import AboutView from '../views/AboutView.vue'
-import LoginView from '@/views/LoginView.vue'
-import CafView from '../views/cafView.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -19,13 +15,13 @@ const router = createRouter({
       props: true,
     },
     {
-      path: '/info/',
+      path: '/info',
       name: 'home',
       component: () => import('../views/HomeView.vue'),
       props: true,
     },
     {
-      path: '/about/',
+      path: '/about',
       name: 'about',
       component: () => import('../views/AboutView.vue'),
       props: true,
@@ -37,7 +33,7 @@ const router = createRouter({
       props: true,
     },
     {
-      path: '/cafInfo',
+      path: '/CafInfo',
       name: 'cafInfo',
       component: () => import('../views/CafView.vue'),
       props: true,
