@@ -1,12 +1,14 @@
 <script setup>
 import { useUserStore } from '@/store/UserStore'
 import SideNav from '@/components/layouts/SideNav.vue'
+import HeaderNav from '@/components/layouts/HeaderNav.vue'
 const userStore = useUserStore()
 </script>
 
 <template>
-  <v-container>
-    <v-row>
+  <HeaderNav />
+  <v-container class="d-flex justify-center h-screen w-66">
+    <v-row class="d-flex justify-center">
       <router-link :to="{ name: 'about', params: { username: userStore.username || 'default' } }">
         <v-btn color="primary">이동 실험.</v-btn>
       </router-link>

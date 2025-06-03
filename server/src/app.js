@@ -6,6 +6,7 @@ import { dirname } from "dirname-filename-esm";
 
 import usersRouter from "./routers/users.js";
 import registerRouter from "./routers/register.js";
+import loginRouter from "./routers/login.js";
 
 // app
 const app = express();
@@ -16,7 +17,7 @@ app.set("views", path.join(__dirname, "views"));
 app.set("view engine", "ejs");
 
 // plugins
-app.use(logger(process.env.NODE_ENV === "production" ? "common" : "devre"));
+app.use(logger(process.env.NODE_ENV === "production" ? "common" : "dev"));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
@@ -29,6 +30,7 @@ app.get("/api", (req, res) => {
 });
 app.use("/api/users", usersRouter);
 app.use("/api/register", registerRouter);
+app.use("/app/login", loginRouter);
 
 export default app;
 

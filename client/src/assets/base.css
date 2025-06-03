@@ -64,7 +64,16 @@ span.green {
 span.blue {
   color: #6fb8f4;
 }
+span.white {
+  color: #e0e0e0;
+}
 
+tx-caf-blue {
+  color: #297ae5;
+}
+span.white {
+  color: #c4c4c4;
+}
 span.linker a {
   color: #297ae5;
   text-decoration: none;

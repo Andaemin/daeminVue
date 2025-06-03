@@ -1,9 +1,23 @@
-// 템플릿 저장용.
-// 건들면 뒤짐.
-// <v-app>
-// <v-container>
-//   <v-text-field label="Email"></v-text-field>
-//   <v-text-field label="Password" type="password"></v-text-field>
-//   <v-btn color="primary">로그인</v-btn>
-// </v-container>
-// </v-app>
+// client/src/store/login.js
+import { defineStore } from 'pinia'
+
+export const useLoginStore = defineStore('login', {
+  state: () => ({
+    isLoggedIn: false,
+    user: null,
+    token: null,
+  }),
+  actions: {
+    setLogin(userData, token = null) {
+      this.isLoggedIn = true
+      this.user = userData
+      this.token = token
+    },
+    logout() {
+      this.isLoggedIn = false
+      this.user = null
+      this.token = null
+    },
+  },
+  persist: true,
+})
