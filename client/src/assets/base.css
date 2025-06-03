@@ -74,9 +74,16 @@ tx-caf-blue {
 span.white {
   color: #c4c4c4;
 }
+span.red {
+  color: rgb(211, 73, 73);
+}
 span.linker a {
   color: #297ae5;
   text-decoration: none;
+}
+bd-line {
+  border-color: black;
+  border-top: solid 5px;
 }
 
 .p5-wrap > * {

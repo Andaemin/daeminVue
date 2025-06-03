@@ -4,10 +4,14 @@ import HeaderNav from '@/components/layouts/HeaderNav.vue'
 import { ref } from 'vue'
 import { useRouter } from 'vue-router'
 import { useLoginStore } from '@/store/login'
+import sproutSmile from '@/assets/sprout_smile.png'
 // import { defaultImage } from '../assets/user_default.png'
 import axios from 'axios'
 const router = useRouter()
 const loginStore = useLoginStore()
+
+console.log('loginStore:', loginStore)
+console.log('setLogin:', loginStore.setLogin)
 
 const userId = ref('')
 const password = ref('')
@@ -27,14 +31,30 @@ const login = async () => {
     }
   } catch (err) {
     console.error(err)
-    errorMsg.value = '서버 에러가 발생했습니다.'
+    errorMsg.value = '❌ 제대로 안보노?'
   }
 }
 </script>
 <template>
   <HeaderNav />
   <v-container class="d-flex justify-center align-center h-screen bg-caf-navy ma-0" fluid>
-    <v-card class="d-flex mb-6 w-75 h-50" color="indigo-darken-3" variant="transparent">
+    <v-card
+      v-if="loginStore.isLoggedIn"
+      class="d-flex justify-center mb-6 w-75"
+      color="indigo-darken-3"
+      variant="transparent"
+    >
+      <span v-if="loginStore.user?.nickname === 'nayeoni'" class="text-h6 blue">
+        <v-img class="w-100" :src="sproutSmile" width="140" height="140"></v-img>
+        <span class="green">'{{ loginStore.user.nickname }} '</span> 님!, 이미 로그인되어
+        있어요!!<br />
+        <span>편하게 이용해주세요 😊</span>
+      </span>
+      <span v-else class="text-h6 blue">
+        <span class="blue">하.... 너는 니가 로그인 되어있는줄도몰라?</span>
+      </span>
+    </v-card>
+    <v-card v-else class="d-flex mb-6 w-75 h-50" color="indigo-darken-3" variant="transparent">
       <v-sheet
         class="d-flex-column align-center text-white bg-transparent ma-2 pa-2 me-auto"
         variant=""
@@ -57,8 +77,8 @@ const login = async () => {
           v-model="password"
           variant="outlined"
         ></v-text-field>
-        <SubmitBtn @click="login" class="font-weight-bold"><slot>Login</slot></SubmitBtn>
-        <p class="error red--text">{{ errorMsg }}</p>
+        <SubmitBtn @click="login" class="font-weight-bold">Login</SubmitBtn>
+        <span class="red" style="font-size: 14px">{{ errorMsg }}</span>
         <v-card-text class="gsapBox">
           뭔데 아직도 계정이 없으세요?
           <span class="linker"

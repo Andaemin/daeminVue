@@ -8,11 +8,17 @@ const props = defineProps({
 const emits = defineEmits('click')
 
 const handler = () => {
-  emits(['click'])
+  emits('click')
 }
 </script>
 <template>
-  <v-btn @click="handler" :disabled="props.disabled" corsor="pointer" color="info" class="ma-2">
+  <v-btn
+    @click="handler"
+    :disabled="props.disabled"
+    style="cursor: pointer"
+    color="info"
+    class="ma-2"
+  >
     <slot>Submit!</slot>
   </v-btn>
 </template>

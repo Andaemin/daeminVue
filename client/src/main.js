@@ -13,5 +13,5 @@ pinia.use(piniaPluginPersistedstate)
 
 app.use(router)
 app.use(vuetify)
-// app.use(createPinia())
+app.use(pinia)
 app.mount('#app')

@@ -56,6 +56,12 @@ const router = createRouter({
       component: () => import('../views/RegisterView.vue'),
       props: true,
     },
+    {
+      path: '/boardview',
+      name: 'boardview',
+      component: () => import('../views/boardView.vue'),
+      props: true,
+    },
   ],
 })
 

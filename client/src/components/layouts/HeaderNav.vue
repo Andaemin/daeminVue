@@ -3,6 +3,7 @@ import { useLoginStore } from '@/store/login'
 import cafverseLogo from '@/assets/cafverse_logo_white.png'
 import { useRouter } from 'vue-router'
 import { ref } from 'vue'
+import userDefault from '../../assets/user_default.png'
 
 const loginStore = useLoginStore()
 const router = useRouter()
@@ -47,7 +48,7 @@ const handleLogout = () => {
         <template #activator="{ props }">
           <v-btn v-bind="props" icon>
             <v-avatar size="32">
-              <v-img :src="loginStore.user?.profileImage || '/default-avatar.png'" />
+              <v-img :src="loginStore.user?.profileImage || userDefault" />
             </v-avatar>
           </v-btn>
         </template>
@@ -61,11 +62,14 @@ const handleLogout = () => {
           </v-list-item>
         </v-list>
       </v-menu>
-      <span class="ml-2 font-weight-bold">{{ loginStore.user?.nickname }}</span>
+      <span v-if="loginStore.user.nickname === 'nayeoni'" class="ml-2 font-weight-bold white"
+        ><span class="blue font-weight-bold"> 나연</span> 님! 너무나 환영해요.
+      </span>
+      <span v-else class="ml-2 font-weight-bold white">{{ loginStore.user?.nickname }}</span>
     </v-toolbar-items>
 
     <v-toolbar-items class="pa-8" v-else>
-      <v-btn text @click="goToLogin" class="tx-caf-blue"> <span class="blue">로그인</span></v-btn>
+      <v-btn text @click="goToLogin" class="tx-caf-blue"><span class="blue">로그인</span></v-btn>
       <span class="white" style="font-size: 14px"> 로그인도 안했어?</span>
     </v-toolbar-items>
   </v-app-bar>

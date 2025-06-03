@@ -3,7 +3,7 @@ import jwt from "jsonwebtoken";
 
 export const login = async (req, res) => {
   const { userId, password } = req.body;
-
+  console.log("JWT_SECRET:", process.env.JWT_SECRET);
   try {
     const user = await User.findOne({ where: { userId } });
     if (!user) {
