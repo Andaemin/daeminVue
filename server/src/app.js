@@ -7,6 +7,7 @@ import { dirname } from "dirname-filename-esm";
 import usersRouter from "./routers/users.js";
 import registerRouter from "./routers/register.js";
 import loginRouter from "./routers/login.js";
+import postRouter from "./routers/post.js";
 
 // app
 const app = express();
@@ -31,6 +32,7 @@ app.get("/api", (req, res) => {
 app.use("/api/users", usersRouter);
 app.use("/api/register", registerRouter);
 app.use("/api/login", loginRouter);
+app.use("/api/posts", postRouter);
 
 export default app;
 

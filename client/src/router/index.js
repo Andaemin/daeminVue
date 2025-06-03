@@ -57,6 +57,12 @@ const router = createRouter({
       props: true,
     },
     {
+      path: '/foruminfo',
+      name: 'forum',
+      component: () => import('../views/forumMainView.vue'),
+      props: true,
+    },
+    {
       path: '/boardview',
       name: 'boardview',
       component: () => import('../views/boardView.vue'),

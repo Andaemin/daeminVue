@@ -1,6 +1,7 @@
 import { Sequelize } from "sequelize";
 import dotenv from "dotenv";
-
+// import { User } from "../models/users.js";
+// import { Post } from "../models/post.js";
 dotenv.config();
 
 export const sequelize = new Sequelize(
@@ -20,6 +21,7 @@ export const connectDB = async () => {
     await sequelize.authenticate();
     console.log("✅ DB 연결");
     await sequelize.sync({ alter: true });
+    // await sequelize.sync({ force: true });
     console.log("이거 뜨면 동기화 된거임");
   } catch (error) {
     console.error("❌ 실패:", error);

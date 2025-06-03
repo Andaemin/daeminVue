@@ -57,7 +57,8 @@ const handleSubmit = async () => {
       nickname: nickname.value,
       agreeDongil: agreeDongil.value,
       role: role.value,
-      brand: role.value === 'pran' ? selectedBrand.value : null, // 브랜드는 pran 일 때만
+      job: job.value,
+      brand: role.value === 'pran' ? selectedBrand.value : null,
     }
 
     const res = await axios.post('/api/register', payload)
@@ -65,8 +66,8 @@ const handleSubmit = async () => {
     successMsg.value = '회원가입 테스트 성공하면 이거뜸'
     console.log(res.data)
 
-    // 이후 페이지 이동
-    router.push('/login') // 예시로 로그인 페이지로 이동
+    alert('성공!')
+    router.push('/login')
   } catch (err) {
     errMsg.value = err.response?.data?.message || '에러메세지 테스트용.'
     console.error(err)
@@ -152,24 +153,11 @@ const handleSubmit = async () => {
           />
 
           <h4 class="font-weight-bold mb-2">직책</h4>
-          <v-select
-            v-model="job"
-            :items="jobs"
-            label="직책"
-            class="mb-3"
-            density="compact"
-            variant="outlined"
-          />
+          <v-select v-model="job" :items="jobs" label="직책" class="mb-3" variant="outlined" />
 
           <div v-if="role === 'pran'" class="mb-3">
             <h4 class="font-weight-bold mb-2">브랜드 선택</h4>
-            <v-select
-              v-model="selectedBrand"
-              :items="brands"
-              label="브랜드"
-              density="compact"
-              variant="outlined"
-            />
+            <v-select v-model="selectedBrand" :items="brands" label="브랜드" variant="outlined" />
           </div>
 
           <v-btn color="primary" block size="default" class="mt-2" @click="handleSubmit"

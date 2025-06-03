@@ -24,13 +24,13 @@ export const User = sequelize.define(
     },
     userId: {
       type: DataTypes.STRING,
-      unique: true,
+      // unique: true,
       allowNull: false,
       comment: "로그인용 사용자 ID",
     },
     email: {
       type: DataTypes.STRING,
-      unique: true,
+      // unique: true,
       allowNull: false,
       validate: { isEmail: true },
     },
@@ -51,9 +51,23 @@ export const User = sequelize.define(
       allowNull: true,
       comment: "프로필 이미지 경로",
     },
+    job: {
+      type: DataTypes.STRING,
+      allowNull: false,
+      comment: "직책 (점주, 직원 등)",
+    },
+    brand: {
+      type: DataTypes.STRING,
+      allowNull: false,
+      defaultValue: "Solo Roaster",
+      comment: "소속 브랜드 (없을 경우 Solo Roaster)",
+    },
   },
   {
-    tableName: "users", // 실제 테이블명을 명시적으로 고정
-    freezeTableName: true, // Sequelize가 자동 복수형 안 만들게
+    tableName: "users",
+    freezeTableName: true,
   }
 );
+export const associateUser = (models) => {
+  User.hasMany(models.Post, { foreignKey: "userId", as: "posts" });
+};

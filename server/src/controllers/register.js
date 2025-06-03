@@ -1,22 +1,27 @@
 import { User } from "../models/users.js";
 
 export const register = async (req, res) => {
-  const { userId, email, password, name, nickname, agreeDongil } = req.body;
+  const { userId, email, password, name, nickname, agreeDongil, job, brand } = req.body;
+
   if (!agreeDongil) {
     return res.status(400).json({ message: "동의 안함." });
   }
+
   if (!email || !/\S+@\S+\.\S+/.test(email)) {
     return res.status(400).json({ message: "이메일 형식 틀림." });
   }
+
   try {
     const userIdFind = await User.findOne({ where: { userId } });
     const emailFind = await User.findOne({ where: { email } });
+
     if (emailFind) {
-      res.status(400).json({ message: "이미 등록된 이메일입니다." });
+      return res.status(400).json({ message: "이미 등록된 이메일입니다." });
     }
     if (userIdFind) {
       return res.status(400).json({ message: "이미 아이디 사용중임." });
     }
+
     const createUser = await User.create({
       userId,
       email,
@@ -24,10 +29,12 @@ export const register = async (req, res) => {
       name,
       nickname,
       agreeDongil,
+      job,
+      brand: brand || "Solo Roaster", // 기본값 처리
     });
 
     res.status(201).json({
-      message: "success resister",
+      message: "success register",
       user: {
         id: createUser.id,
         email: createUser.email,

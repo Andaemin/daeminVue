@@ -1,0 +1,10 @@
+POST http://127.0.0.1:3008/api/posts
+Content-Type: application/json
+
+{
+  "title": "카페 분위기 좋은 곳 추천해요 ☕️",
+  "content": "요즘 집중할 수 있는 조용한 카페 찾고 있는데, 혹시 괜찮은 곳 아시는 분 계실까요? 서울 강남 근처면 더 좋아요!",
+  "userId": 1,
+  "category": "자유게시판",
+  "isAnonymous": false
+}
