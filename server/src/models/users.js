@@ -13,7 +13,7 @@
 // export default usersModel;
 
 import { DataTypes } from "sequelize";
-import { sequelize } from "../database/index.js";
+import { sequelize } from "../database/connection.js";
 
 export const User = sequelize.define(
   "User",

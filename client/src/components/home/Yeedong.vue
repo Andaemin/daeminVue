@@ -30,7 +30,7 @@ import SubmitBtn from '../base/SubmitBtn.vue'
         <v-card-text class="text-white">포럼 메인으로 이동.</v-card-text>
       </v-row>
       <v-row>
-        <SubmitBtn :to="{ name: 'boardview' }">게시글</SubmitBtn>
+        <SubmitBtn :to="{ name: 'postlist' }">게시글</SubmitBtn>
         <v-card-text class="text-white">게시글 템플릿으로 이동.</v-card-text>
       </v-row>
     </v-col>

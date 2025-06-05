@@ -56,16 +56,52 @@ const router = createRouter({
       component: () => import('../views/RegisterView.vue'),
       props: true,
     },
+    // 🔥 포럼 관련 라우트들
     {
-      path: '/foruminfo',
+      path: '/forum',
       name: 'forum',
-      component: () => import('../views/forumMainView.vue'),
+      component: () => import('../views/ForumChoiceView.vue'),
       props: true,
     },
     {
-      path: '/boardview',
+      path: '/forum/:category',
       name: 'boardview',
-      component: () => import('../views/boardView.vue'),
+      component: () => import('../views/BoardView.vue'),
+      props: true,
+    },
+    {
+      path: '/forum/:category/:id',
+      name: 'postDetail',
+      component: () => import('../views/PostDetailView.vue'),
+      props: true,
+    },
+    // 🔥 기존 라우트들 (호환성)
+    {
+      path: '/foruminfo',
+      redirect: '/forum',
+    },
+    {
+      path: '/postlist',
+      name: 'postlist',
+      component: () => import('../views/PostListView.vue'),
+      props: true,
+    },
+    {
+      path: '/forumchoice',
+      redirect: '/forum',
+    },
+    // 🔥 Agora 라우트
+    {
+      path: '/agora',
+      name: 'agora',
+      component: () => import('../views/AgoraView.vue'),
+      props: true,
+    },
+    // 🔥 프로필 라우트
+    {
+      path: '/profile',
+      name: 'profile',
+      component: () => import('../views/ProfileView.vue'),
       props: true,
     },
   ],

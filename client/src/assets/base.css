@@ -68,8 +68,12 @@ span.white {
   color: #e0e0e0;
 }
 
-tx-caf-blue {
+span.blue-2 {
   color: #297ae5;
+}
+
+tx-caf-blue {
+  color: #3566e3;
 }
 span.white {
   color: #c4c4c4;

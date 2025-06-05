@@ -40,7 +40,7 @@ const login = async () => {
   <v-container class="d-flex justify-center align-center h-screen bg-caf-navy ma-0" fluid>
     <v-card
       v-if="loginStore.isLoggedIn"
-      class="d-flex justify-center mb-6 w-75"
+      class="d-flex justify-center mb-66 w-33"
       color="indigo-darken-3"
       variant="transparent"
     >
@@ -54,13 +54,14 @@ const login = async () => {
         <span class="blue">하.... 너는 니가 로그인 되어있는줄도몰라?</span>
       </span>
     </v-card>
-    <v-card v-else class="d-flex mb-6 w-75 h-50" color="indigo-darken-3" variant="transparent">
+    <v-card v-else class="d-flex mb-6 w-66 h-50" color="indigo-darken-3" variant="transparent">
       <v-sheet
         class="d-flex-column align-center text-white bg-transparent ma-2 pa-2 me-auto"
         variant=""
       >
         <v-card-title class="text-h4 font-weight-black"
-          >CaFverse ID를 입력해주세요 <br />이용을 위해 부탁드려요!</v-card-title
+          ><span class="green font-weight-black">CaF</span><span class="blue">Verse</span> ID를
+          입력해주세요 <br />이용을 위해 부탁드려요!</v-card-title
         >
         <v-card-subtitle class="text-subtitle-1/2 font-weight-bold"
           >원활한 이용을 위해서는 로그인 하는것을 권장드려요<br /><span class="bold"> BUT</span>,
