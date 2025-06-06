@@ -11,6 +11,7 @@ const posts = ref([])
 const loading = ref(true)
 const error = ref(null)
 
+// 현재 카테고리 정보
 const currentCategory = computed(() => {
   return getCategoryByKey(route.params.category)
 })
@@ -23,6 +24,7 @@ const fetchPosts = async () => {
   try {
     loading.value = true
     const res = await axios.get('/api/posts')
+    console.log(`받은 데이터 : ${res.body}`)
     posts.value = res.data.filter((post) => post.category === route.params.category)
   } catch (err) {
     error.value = '게시글을 불러오는 중 에러가 발생했습니다.'
@@ -43,12 +45,17 @@ const goToPost = (postId) => {
   })
 }
 
+// 포럼 메인으로 돌아가기
 const goToForum = () => {
   router.push({ name: 'forum' })
 }
 
+// 글쓰기 (임시)
 const writePost = () => {
-  alert('게시글 작성 기능은 준비 중입니다.')
+  router.push({
+    name: 'writePostCategory',
+    params: { category: route.params.category },
+  })
 }
 
 onMounted(fetchPosts)
@@ -56,7 +63,6 @@ onMounted(fetchPosts)
 
 <template>
   <HeaderNav />
-
   <v-container
     fluid
     class="pa-0"
@@ -138,7 +144,7 @@ onMounted(fetchPosts)
               <span class="mx-1">•</span>
               {{ post.author?.brand || 'Solo Roaster' }}
             </v-card-subtitle>
-
+            <!-- 1. 일단  -->
             <v-card-text>
               <div class="text-truncate">
                 {{ post.content }}

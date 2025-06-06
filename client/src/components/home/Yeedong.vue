@@ -33,6 +33,10 @@ import SubmitBtn from '../base/SubmitBtn.vue'
         <SubmitBtn :to="{ name: 'postlist' }">게시글</SubmitBtn>
         <v-card-text class="text-white">게시글 템플릿으로 이동.</v-card-text>
       </v-row>
+      <v-row>
+        <SubmitBtn :to="{ name: 'writepost' }">글싸지르기</SubmitBtn>
+        <v-card-text class="text-white">게시글 템플릿으로 이동.</v-card-text>
+      </v-row>
     </v-col>
   </v-card>
 </template>

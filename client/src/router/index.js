@@ -56,7 +56,7 @@ const router = createRouter({
       component: () => import('../views/RegisterView.vue'),
       props: true,
     },
-    // 🔥 포럼 관련 라우트들
+
     {
       path: '/forum',
       name: 'forum',
@@ -75,7 +75,7 @@ const router = createRouter({
       component: () => import('../views/PostDetailView.vue'),
       props: true,
     },
-    // 🔥 기존 라우트들 (호환성)
+
     {
       path: '/foruminfo',
       redirect: '/forum',
@@ -90,18 +90,29 @@ const router = createRouter({
       path: '/forumchoice',
       redirect: '/forum',
     },
-    // 🔥 Agora 라우트
+
     {
       path: '/agora',
       name: 'agora',
       component: () => import('../views/AgoraView.vue'),
       props: true,
     },
-    // 🔥 프로필 라우트
     {
       path: '/profile',
       name: 'profile',
       component: () => import('../views/ProfileView.vue'),
+      props: true,
+    },
+    {
+      path: '/write',
+      name: 'writepost',
+      component: () => import('../views/WritePostView.vue'),
+      props: true,
+    },
+    {
+      path: '/write/:category',
+      name: 'writePostCategory',
+      component: () => import('../views/WritePostView.vue'),
       props: true,
     },
   ],

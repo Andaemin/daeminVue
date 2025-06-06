@@ -3,6 +3,7 @@
 import { onMounted, ref } from 'vue'
 import { useRoute } from 'vue-router'
 import axios from 'axios'
+import SubmitBtn from '@/components/base/SubmitBtn.vue'
 
 const route = useRoute()
 const post = ref(null)
@@ -33,7 +34,6 @@ onMounted(async () => {
         {{ post.content }}
       </v-card-text>
     </v-card>
-
     <div v-else class="text-red mt-4">{{ errorMsg }}</div>
   </v-container>
 </template>
