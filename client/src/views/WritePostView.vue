@@ -130,13 +130,13 @@ onMounted(() => {
   <HeaderNav />
 
   <v-container
-    class="bg-caf-navy h-screen w-100"
-    style="min-height: calc(100vh - 64px); padding: 32px"
+    class="bg-caf-navy h-screen h-100 ma-0"
     fluid
+    style="margin-top: 64px; min-height: calc(100vh); padding: 32px"
   >
     <!-- SproutCreature 안내 -->
     <div class="creature-guide">
-      <v-avatar size="60" class="creature-avatar">
+      <!-- <v-avatar size="60" class="creature-avatar">
         <v-img :src="sproutCreature" alt="SproutCreature" />
       </v-avatar>
       <div class="guide-bubble">
@@ -145,7 +145,7 @@ onMounted(() => {
           멋진 이야기를 CaFverse에 남겨보자!
         </div>
         <div class="bubble-tail"></div>
-      </div>
+      </div> -->
     </div>
 
     <!-- 헤더 -->

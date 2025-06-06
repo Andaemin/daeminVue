@@ -31,7 +31,7 @@ const registerData = [
   },
   { title: '커피 회사에 종사해요!', image: '../../src/assets/bonsa.png', value: 'company' },
   {
-    title: '카페관랸해서 글을 써요! ',
+    title: '카페관련해서 글을 써요! ',
     image: '../../src/assets/kalrum.png',
     value: 'kalrum',
   },

@@ -171,10 +171,7 @@ onMounted(() => {
     <v-card max-width="900" width="100%" class="mx-4" rounded="lg" elevation="8">
       <!-- 헤더 -->
       <v-card-title class="pa-6 d-flex align-center">
-        <v-btn icon variant="text" @click="goBack" class="mr-4">
-          <v-icon>mdi-arrow-left</v-icon>
-        </v-btn>
-
+        <v-btn icon="mdi-arrow-left" variant="text" @click="goBack" class="mr-4" />
         <v-avatar size="32" class="mr-3">
           <v-img :src="sproutCreature" alt="SproutCreature" />
         </v-avatar>
@@ -187,7 +184,7 @@ onMounted(() => {
 
       <!-- SproutCreature 말풍선 -->
       <v-card-text class="pa-0">
-        <v-sheet class="bg-grey-lighten-5 pa-6">
+        <v-sheet class="pa-6">
           <div class="d-flex align-center justify-center">
             <v-avatar size="50" class="mr-4">
               <v-img :src="sproutCreature" alt="SproutCreature" />
@@ -321,7 +318,7 @@ onMounted(() => {
                   color="indigo-darken-3"
                   :loading="loading"
                   size="large"
-                  class="font-weight-bold px-8"
+                  class="font-weight-bold ma-2 px-8"
                 >
                   저장
                 </v-btn>

@@ -28,6 +28,8 @@ export const login = async (req, res) => {
         userId: user.userId,
         nickname: user.nickname,
         profileImage: user.profileImage,
+        job: user.job,
+        brand: user.brand,
       },
     });
   } catch (err) {

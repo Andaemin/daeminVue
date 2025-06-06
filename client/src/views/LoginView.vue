@@ -23,8 +23,14 @@ const login = async () => {
       userId: userId.value,
       password: password.value,
     })
+    console.log('서버 응답 전체:', res.data)
+    console.log('사용자 데이터:', res.data.user)
+    console.log('job:', res.data.user?.job)
+    console.log('brand:', res.data.user?.brand)
+
     if (res.data.token && res.data.user) {
       loginStore.setLogin(res.data.user, res.data.token)
+      console.log('store에 저장된 user:', loginStore.user)
       router.push('/home')
     } else {
       errorMsg.value = res.data.message || '로그인 실패'

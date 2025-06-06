@@ -2,11 +2,16 @@
 import { ref, onMounted, computed } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import HeaderNav from '@/components/layouts/HeaderNav.vue'
+import LikeButton from '@/components/base/LikeBtn.vue'
 import { getCategoryByKey } from '@/data/chipCategories.js'
+import { useLikeStore } from '@/store/likeStore.js'
+import { useLoginStore } from '@/store/login'
 import axios from 'axios'
 
 const route = useRoute()
 const router = useRouter()
+const likeStore = useLikeStore()
+const loginStore = useLoginStore()
 const posts = ref([])
 const loading = ref(true)
 const error = ref(null)
@@ -20,12 +25,20 @@ const categoryTitle = computed(() => {
   return currentCategory.value ? currentCategory.value.name : '게시판'
 })
 
+// 게시글 불러오기
 const fetchPosts = async () => {
   try {
     loading.value = true
     const res = await axios.get('/api/posts')
-    console.log(`받은 데이터 : ${res.body}`)
-    posts.value = res.data.filter((post) => post.category === route.params.category)
+    // 현재 카테고리에 해당하는 게시글만 필터링
+    const filteredPosts = res.data.filter((post) => post.category === route.params.category)
+    posts.value = filteredPosts
+
+    // 좋아요 정보 배치 로드
+    if (filteredPosts.length > 0) {
+      const postIds = filteredPosts.map((post) => post.id)
+      await likeStore.loadLikesForPosts(postIds, loginStore.token)
+    }
   } catch (err) {
     error.value = '게시글을 불러오는 중 에러가 발생했습니다.'
     console.error('게시글 로딩 실패:', err)
@@ -63,6 +76,7 @@ onMounted(fetchPosts)
 
 <template>
   <HeaderNav />
+
   <v-container
     fluid
     class="pa-0"
@@ -133,18 +147,45 @@ onMounted(fetchPosts)
                 {{ categoryTitle }}
               </v-chip>
             </v-card-title>
-
-            <v-card-subtitle class="text-subtitle-2">
+            <!-- v-card-subtitle 부분만 수정 -->
+            <v-card-subtitle class="text-subtitle-2 d-flex align-center flex-wrap gap-1 pb-2">
               <v-icon size="16" class="mr-1">
                 {{ post.isAnonymous ? 'mdi-incognito' : 'mdi-account' }}
               </v-icon>
-              {{ post.isAnonymous ? '익명' : post.author?.name || '알 수 없음' }}
-              <span class="mx-1">•</span>
-              {{ post.author?.job || '-' }}
-              <span class="mx-1">•</span>
-              {{ post.author?.brand || 'Solo Roaster' }}
+
+              <!-- 작성자 이름 (익명일 때만 칩) -->
+              <v-chip
+                v-if="post.isAnonymous"
+                size="x-small"
+                color="#95A5A6"
+                text-color="white"
+                variant="flat"
+                class="mr-1"
+              >
+                익명
+              </v-chip>
+              <span v-else class="font-weight-medium mr-2">
+                {{ post.author?.name || post.authorName || '알 수 없음' }}
+              </span>
+
+              <!-- 직업 태그 -->
+              <v-chip
+                v-if="post.author?.job || post.authorJob"
+                size="x-small"
+                color="#3498DB"
+                text-color="white"
+                variant="flat"
+                class="mr-1"
+              >
+                {{ post.author?.job || post.authorJob }}
+              </v-chip>
+
+              <!-- 브랜드 태그 -->
+              <v-chip size="x-small" color="#E67E22" text-color="white" variant="flat">
+                {{ post.author?.brand || post.authorBrand || 'Solo Roaster' }}
+              </v-chip>
             </v-card-subtitle>
-            <!-- 1. 일단  -->
+
             <v-card-text>
               <div class="text-truncate">
                 {{ post.content }}
@@ -152,7 +193,10 @@ onMounted(fetchPosts)
             </v-card-text>
 
             <v-card-actions class="pa-4">
+              <LikeButton :post-id="post.id" size="small" variant="text-only" />
+
               <v-spacer></v-spacer>
+
               <span class="text-caption text-grey">
                 {{ new Date(post.createdAt).toLocaleDateString('ko-KR') }}
               </span>

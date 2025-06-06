@@ -1,4 +1,3 @@
-<!-- src/views/ForumChoiceView.vue -->
 <script setup>
 import HeaderNav from '@/components/layouts/HeaderNav.vue'
 import { categoryChips } from '@/data/chipCategories.js'
@@ -18,9 +17,19 @@ onMounted(async () => {
     const res = await axios.get('/api/posts')
     posts.value = res.data || []
 
-    // category 는 소문자 key 값을 기준으로 분리
-    freeboardPosts.value = posts.value.filter((p) => p.category === 'freeboard').slice(0, 5)
-    starbucksPosts.value = posts.value.filter((p) => p.category === 'starbucks').slice(0, 5)
+    // category 는 소문자 key 값을 기준으로 분리하고, 최신순으로 정렬
+    freeboardPosts.value = posts.value
+      .filter((p) => p.category === 'freeboard')
+      .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt)) // 최신순 정렬
+      .slice(0, 5)
+
+    starbucksPosts.value = posts.value
+      .filter((p) => p.category === 'starbucks')
+      .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt)) // 최신순 정렬
+      .slice(0, 5)
+
+    console.log('로드된 게시글:', posts.value) // 디버깅용
+    console.log('자유게시판 게시글:', freeboardPosts.value) // 디버깅용
   } catch (err) {
     console.error('게시글 불러오기 실패:', err)
   }
@@ -35,9 +44,34 @@ const goToBoard = (categoryKey) => {
   }
 }
 
-// 클릭 시 /post/:id 로 이동 (예시)
-const goToPost = (id) => {
-  router.push({ name: 'postDetail', params: { id } })
+const goToPost = (postId) => {
+  console.log('클릭된 게시글 ID:', postId) // 디버깅용
+
+  // 전체 게시글에서 해당 ID의 게시글 찾기
+  const post = posts.value.find((p) => p.id === postId)
+
+  if (!post) {
+    console.error('게시글을 찾을 수 없습니다:', postId)
+    return
+  }
+
+  console.log('찾은 게시글:', post) // 디버깅용
+
+  try {
+    // 방법 1: category와 id 모두 전달
+    router.push({
+      name: 'postDetail',
+      params: {
+        category: post.category,
+        id: post.id,
+      },
+    })
+  } catch (error) {
+    console.error('라우터 이동 오류:', error)
+
+    // 방법 2: 직접 경로로 이동
+    router.push(`/forum/${post.category}/${post.id}`)
+  }
 }
 
 // 칩 색상 가져오기 (카테고리 키에 맞춘 색)
@@ -57,10 +91,11 @@ const getColor = (key) => {
     <div class="content-wrapper">
       <!-- 메인 타이틀 -->
       <div class="title-section">
-        <h1 class="main-title">
-          Welcome to <span class="cafverse-text">CaF<span class="blue-text">verse</span></span>
-        </h1>
-        <p class="subtitle">Where Coffee Stories Begin</p>
+        <h2 class="main-title">
+          Welcome to <span class="cafverse-text">CaF<span class="blue-text">verse</span></span> in
+          Forum
+        </h2>
+        <p class="subtitle">CaFVerse 게시판에 오신것을 환영해요!</p>
       </div>
 
       <!-- 고퀄리티 칩(Chip) 영역 -->
@@ -146,7 +181,7 @@ const getColor = (key) => {
             <div class="agora-icon">🏛️</div>
             <div class="agora-text">
               <h3>Agora</h3>
-              <p>Join the Great Coffee Debate</p>
+              <p>여기는 토론장이예요! CaFverse를 찾은 Finder들이 갈라치기 하는 현장을 봐요!</p>
             </div>
           </div>
           <div class="agora-arrow">→</div>
@@ -156,7 +191,7 @@ const getColor = (key) => {
       <!-- 구분선 -->
       <div class="section-divider">
         <div class="divider-line"></div>
-        <span class="divider-text">Popular Echo Whispers</span>
+        <span class="divider-text">Hot Topic Best Board!</span>
         <div class="divider-line"></div>
       </div>
 
@@ -169,7 +204,7 @@ const getColor = (key) => {
               <h3 class="board-title">
                 <span class="board-icon">🔥</span>
                 <span>FreeBoard</span>
-                <span class="board-subtitle">ScentStalkers' Stories</span>
+                <span class="board-subtitle">자유롭게 이야기 할 수 있는 게시판이예요!</span>
               </h3>
             </div>
             <div class="board-content">
@@ -207,7 +242,9 @@ const getColor = (key) => {
               <h3 class="board-title">
                 <span class="board-icon">☕</span>
                 <span>Starbucks</span>
-                <span class="board-subtitle">Great Roasteries Tales</span>
+                <span class="board-subtitle"
+                  >Great Roasteries 중 하나인 Starbucks 게시판이예요!</span
+                >
               </h3>
             </div>
             <div class="board-content">

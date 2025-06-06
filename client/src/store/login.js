@@ -9,9 +9,21 @@ export const useLoginStore = defineStore('login', {
   }),
   actions: {
     setLogin(userData, token = null) {
+      // 명시적으로 모든 필드 설정
       this.isLoggedIn = true
-      this.user = userData
+      this.user = {
+        id: userData.id,
+        userId: userData.userId,
+        nickname: userData.nickname,
+        name: userData.name,
+        profileImage: userData.profileImage,
+        job: userData.job, // 명시적으로 추가
+        brand: userData.brand, // 명시적으로 추가
+      }
       this.token = token
+
+      // 디버깅용 (나중에 제거)
+      console.log('setLogin 완료 - user:', this.user)
     },
     logout() {
       this.isLoggedIn = false
