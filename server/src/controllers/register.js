@@ -1,4 +1,5 @@
 import { User } from "../models/users.js";
+import { checkAndAwardBadges } from "./badge.js";
 
 export const register = async (req, res) => {
   const { userId, email, password, name, nickname, agreeDongil, job, brand } = req.body;
@@ -32,6 +33,8 @@ export const register = async (req, res) => {
       job,
       brand: brand || "Solo Roaster", // 기본값 처리
     });
+
+    await checkAndAwardBadges(createUser.id);
 
     res.status(201).json({
       message: "success register",

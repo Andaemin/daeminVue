@@ -9,6 +9,7 @@ import registerRouter from "./routers/register.js";
 import loginRouter from "./routers/login.js";
 import postRouter from "./routers/post.js";
 import likeRouter from "./routers/like.js"; // 좋아요 라우터 추가
+import badgeRouter from "./routers/badge.js";
 
 // app
 const app = express();
@@ -34,5 +35,5 @@ app.use("/api/register", registerRouter);
 app.use("/api/login", loginRouter);
 app.use("/api/posts", postRouter);
 app.use("/api", likeRouter); // 좋아요 라우터 추가
-
+app.use("/api/badges", badgeRouter);
 export default app;
