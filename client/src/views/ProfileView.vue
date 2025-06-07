@@ -3,6 +3,7 @@ import { ref, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
 import { useLoginStore } from '@/store/login'
 import HeaderNav from '@/components/layouts/HeaderNav.vue'
+import BadgeCollection from '@/components/base/BadgeCollection.vue'
 import userDefault from '@/assets/user_default.png'
 import sproutCreature from '@/assets/sproutCreature.png'
 import axios from 'axios'
@@ -26,6 +27,7 @@ const snackbar = ref(false)
 const snackbarText = ref('')
 const snackbarColor = ref('success')
 const imagePreview = ref('')
+const showAllBadges = ref(false) // 뱃지 토글 상태 추가
 
 // 직업 옵션들 (단순화)
 const jobOptions = ['직원', '점주', '바리스타', '건물주', '아르바이트생']
@@ -182,29 +184,6 @@ onMounted(() => {
         </div>
       </v-card-title>
 
-      <!-- SproutCreature 말풍선 -->
-      <v-card-text class="pa-0">
-        <v-sheet class="pa-6">
-          <div class="d-flex align-center justify-center">
-            <v-avatar size="50" class="mr-4">
-              <v-img :src="sproutCreature" alt="SproutCreature" />
-            </v-avatar>
-            <v-sheet
-              class="pa-4 bg-white rounded-lg position-relative"
-              elevation="1"
-              style="max-width: 400px"
-            >
-              <div class="text-body-1">
-                여기는 프로필 수정하는 공간이야! 🌱<br />
-                당신의 CaFverse 정체성을 자유롭게 설정해보세요!
-              </div>
-              <!-- 말풍선 꼬리 -->
-              <div class="speech-bubble-tail"></div>
-            </v-sheet>
-          </div>
-        </v-sheet>
-      </v-card-text>
-
       <!-- 메인 컨텐츠 -->
       <v-card-text class="pa-8">
         <v-row>
@@ -336,6 +315,38 @@ onMounted(() => {
             </v-form>
           </v-col>
         </v-row>
+
+        <!-- 뱃지 섹션 -->
+        <v-card rounded="lg" elevation="1" class="mt-4">
+          <v-card-title class="pa-3 d-flex align-center">
+            <v-icon icon="mdi-medal" class="mr-2" color="orange" size="20" />
+            <span class="text-subtitle-1 font-weight-bold">SproutFinder 뱃지</span>
+            <v-spacer />
+            <!-- 전체/보유 토글 버튼 -->
+            <v-btn
+              variant="text"
+              size="small"
+              color="primary"
+              @click="showAllBadges = !showAllBadges"
+              class="text-caption px-2"
+            >
+              {{ showAllBadges ? '보유만' : '전체' }}
+            </v-btn>
+          </v-card-title>
+
+          <v-divider />
+
+          <v-card-text class="pa-3">
+            <!-- 뱃지 컬렉션 -->
+            <BadgeCollection
+              :user-id="loginStore.user?.id"
+              :show-all="showAllBadges"
+              :max-display="showAllBadges ? 0 : 6"
+              size="small"
+              @show-more="showAllBadges = true"
+            />
+          </v-card-text>
+        </v-card>
       </v-card-text>
     </v-card>
   </v-container>
@@ -363,5 +374,14 @@ onMounted(() => {
   border-left: 6px solid transparent;
   border-right: 6px solid transparent;
   border-top: 6px solid white;
+}
+
+/* 뱃지 섹션 애니메이션 */
+.v-card {
+  transition: all 0.3s ease;
+}
+
+.v-card:hover {
+  transform: translateY(-1px);
 }
 </style>

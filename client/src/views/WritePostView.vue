@@ -4,7 +4,7 @@ import { useRoute, useRouter } from 'vue-router'
 import { useLoginStore } from '@/store/login'
 import HeaderNav from '@/components/layouts/HeaderNav.vue'
 import { categoryChips, getCategoryByKey } from '@/data/chipCategories.js'
-import sproutCreature from '@/assets/sproutCreature.png'
+// import sproutCreature from '@/assets/sproutCreature.png'
 import axios from 'axios'
 
 const route = useRoute()
