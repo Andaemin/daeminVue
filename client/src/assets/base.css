@@ -69,7 +69,10 @@ span.white {
 }
 
 span.blue-2 {
-  color: #297ae5;
+  color: #5794e9;
+  font-family: 'NanumSquareNeo';
+  src: url('../assets/fonts/NanumSquareNeo-eHv.ttf') format('truetype');
+  font-weight: bolder;
 }
 
 tx-caf-blue {

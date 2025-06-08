@@ -17,7 +17,10 @@ import SubmitBtn from '../base/SubmitBtn.vue'
         <SubmitBtn :to="{ name: 'login' }">로그인</SubmitBtn>
         <v-card-text class="text-white">로그인으로 이동.</v-card-text>
       </v-row>
-
+      <v-row>
+        <SubmitBtn :to="{ name: 'cafInfo' }">세계관</SubmitBtn>
+        <v-card-text class="text-white">세계관 소개 이동.</v-card-text>
+      </v-row>
       <v-row>
         <SubmitBtn :to="{ name: 'register' }">회원가입</SubmitBtn>
         <v-card-text class="text-white">회원가입으로 이동.</v-card-text>
