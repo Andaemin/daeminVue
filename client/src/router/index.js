@@ -121,6 +121,18 @@ const router = createRouter({
       component: () => import('../views/UserProfileView.vue'),
       props: true,
     },
+    {
+      path: '/agora/:id',
+      name: 'agoraDetail',
+      component: () => import('../views/AgoraDetailView.vue'),
+      props: true,
+    },
+    {
+      path: '/agora/create',
+      name: 'createDebate',
+      component: () => import('../views/CreateDebateView.vue'),
+      props: true,
+    },
   ],
 })
 

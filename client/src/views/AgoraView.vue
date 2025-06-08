@@ -1,123 +1,40 @@
 <script setup>
 import { ref, onMounted } from 'vue'
-import HeaderNav from '@/components/layouts/HeaderNav.vue'
 import { useRouter } from 'vue-router'
+import { useAgoraStore } from '@/store/agoraStore'
+import { useLoginStore } from '@/store/login'
+import HeaderNav from '@/components/layouts/HeaderNav.vue'
 import sproutMangchi from '@/assets/sprout_mangchi.png'
-import axios from 'axios'
 
 const router = useRouter()
-const debates = ref([])
-const loading = ref(true)
-const selectedDebate = ref(null)
+const agoraStore = useAgoraStore()
+const loginStore = useLoginStore()
 
-// 한글 토론 데이터
-const mockDebates = [
-  {
-    id: 1,
-    title: '스타벅스 vs 이디야: 가성비 어느 쪽이 더 좋을까?',
-    description:
-      '같은 가격대 메뉴를 비교했을 때, 어디가 더 만족스러운지 ScentStalker들의 의견을 들어보고 싶어요!',
-    optionA: '스타벅스',
-    optionB: '이디야',
-    votesA: 145,
-    votesB: 98,
-    totalVotes: 243,
-    category: 'brand-comparison',
-    author: '향찾는바리스타',
-    createdAt: '2024-06-01',
-    comments: 32,
-  },
-  {
-    id: 2,
-    title: '카페 알바 vs 편의점 알바: 어느 쪽이 더 나을까?',
-    description: 'SproutFinder들을 위한 질문! 첫 아르바이트로 어느 쪽을 추천하시나요?',
-    optionA: '카페 알바',
-    optionB: '편의점 알바',
-    votesA: 87,
-    votesB: 45,
-    totalVotes: 132,
-    category: 'work-life',
-    author: 'WhiffKeeper_민지',
-    createdAt: '2024-06-02',
-    comments: 18,
-  },
-  {
-    id: 3,
-    title: '개인카페 vs 프렌차이즈: 창업한다면?',
-    description:
-      'CaFverse에서 창조주가 된다면, Solo Roaster와 Great Roasteries 중 어느 길을 선택하시겠어요?',
-    optionA: 'Solo Roaster (개인카페)',
-    optionB: 'Great Roasteries (프렌차이즈)',
-    votesA: 156,
-    votesB: 89,
-    totalVotes: 245,
-    category: 'business-dream',
-    author: 'EchoMaker_준호',
-    createdAt: '2024-06-03',
-    comments: 41,
-  },
-  {
-    id: 4,
-    title: '아침 커피 vs 오후 커피: 언제가 더 맛있을까?',
-    description:
-      '같은 원두, 같은 바리스타가 내린 커피라도 시간대에 따라 맛이 다르다고 생각하시나요?',
-    optionA: '아침 커피',
-    optionB: '오후 커피',
-    votesA: 67,
-    votesB: 54,
-    totalVotes: 121,
-    category: 'taste-debate',
-    author: '아로마시커_수진',
-    createdAt: '2024-06-04',
-    comments: 15,
-  },
-]
-
-// 토론 참여하기
-const participate = async (debate, option) => {
-  // TODO: 실제 투표 API 호출
-  if (option === 'A') {
-    debate.votesA++
-  } else {
-    debate.votesB++
-  }
-  debate.totalVotes++
-}
-
-// 토론 상세보기
-const viewDebateDetail = (debate) => {
-  selectedDebate.value = debate
-}
-
-// 상세 닫기
-const closeDetail = () => {
-  selectedDebate.value = null
-}
-
-// 새 토론 만들기
-const createDebate = () => {
-  alert('새로운 Echo Whisper 토론 생성 기능 준비 중입니다!')
-}
-
-// 포럼으로 돌아가기
+// 토론 목록으로 이동
 const goToForum = () => {
   router.push({ name: 'forum' })
 }
 
-onMounted(async () => {
-  // 나중에 실제 API로 교체
-  // try {
-  //   const res = await axios.get('/api/agora/debates')
-  //   debates.value = res.data
-  // } catch (err) {
-  //   console.error('토론 데이터 로딩 실패:', err)
-  // }
+// 새 토론 작성으로 이동
+const createDebate = () => {
+  if (!loginStore.isLoggedIn) {
+    alert('로그인이 필요한 기능입니다.')
+    router.push({ name: 'login' })
+    return
+  }
+  router.push({ name: 'createDebate' })
+}
 
-  // 임시 mock 데이터 사용
-  setTimeout(() => {
-    debates.value = mockDebates
-    loading.value = false
-  }, 500)
+// 토론 상세보기로 이동
+const viewDebateDetail = (debate) => {
+  router.push({
+    name: 'agoraDetail',
+    params: { id: debate.id },
+  })
+}
+
+onMounted(async () => {
+  await agoraStore.loadDebates()
 })
 </script>
 
@@ -125,8 +42,7 @@ onMounted(async () => {
   <HeaderNav />
 
   <div class="agora-container">
-    <!-- 메인 리스트 뷰 -->
-    <div v-if="!selectedDebate" class="main-view">
+    <div class="main-view">
       <!-- 헤더 영역 -->
       <div class="header-section">
         <div class="header-top">
@@ -159,15 +75,23 @@ onMounted(async () => {
       </div>
 
       <!-- 로딩 상태 -->
-      <div v-if="loading" class="loading-section">
+      <div v-if="agoraStore.loading" class="loading-section">
         <v-progress-circular indeterminate color="#57C675" size="50"></v-progress-circular>
         <p class="loading-text">토론을 불러오는 중...</p>
+      </div>
+
+      <!-- 에러 상태 -->
+      <div v-else-if="agoraStore.error" class="error-section">
+        <v-alert type="error" variant="tonal" class="mb-4">
+          {{ agoraStore.error }}
+        </v-alert>
+        <v-btn @click="agoraStore.loadDebates()" color="primary">다시 시도</v-btn>
       </div>
 
       <!-- 토론 목록 -->
       <div v-else class="debates-grid">
         <div
-          v-for="debate in debates"
+          v-for="debate in agoraStore.debates"
           :key="debate.id"
           class="debate-card"
           @click="viewDebateDetail(debate)"
@@ -195,14 +119,23 @@ onMounted(async () => {
             <div class="vote-option">
               <div class="option-header">
                 <span class="option-name">{{ debate.optionA }}</span>
-                <span class="option-percentage"
-                  >{{ Math.round((debate.votesA / debate.totalVotes) * 100) }}%</span
-                >
+                <span class="option-percentage">
+                  {{
+                    debate.totalVotes > 0
+                      ? Math.round((debate.votesA / debate.totalVotes) * 100)
+                      : 0
+                  }}%
+                </span>
               </div>
               <div class="vote-bar">
                 <div
                   class="vote-fill option-a-fill"
-                  :style="{ width: `${(debate.votesA / debate.totalVotes) * 100}%` }"
+                  :style="{
+                    width:
+                      debate.totalVotes > 0
+                        ? `${(debate.votesA / debate.totalVotes) * 100}%`
+                        : '0%',
+                  }"
                 ></div>
               </div>
               <span class="vote-count">{{ debate.votesA }}표</span>
@@ -213,14 +146,23 @@ onMounted(async () => {
             <div class="vote-option">
               <div class="option-header">
                 <span class="option-name">{{ debate.optionB }}</span>
-                <span class="option-percentage"
-                  >{{ Math.round((debate.votesB / debate.totalVotes) * 100) }}%</span
-                >
+                <span class="option-percentage">
+                  {{
+                    debate.totalVotes > 0
+                      ? Math.round((debate.votesB / debate.totalVotes) * 100)
+                      : 0
+                  }}%
+                </span>
               </div>
               <div class="vote-bar">
                 <div
                   class="vote-fill option-b-fill"
-                  :style="{ width: `${(debate.votesB / debate.totalVotes) * 100}%` }"
+                  :style="{
+                    width:
+                      debate.totalVotes > 0
+                        ? `${(debate.votesB / debate.totalVotes) * 100}%`
+                        : '0%',
+                  }"
                 ></div>
               </div>
               <span class="vote-count">{{ debate.votesB }}표</span>
@@ -233,102 +175,15 @@ onMounted(async () => {
             <span class="date">{{ new Date(debate.createdAt).toLocaleDateString('ko-KR') }}</span>
           </div>
         </div>
-      </div>
-    </div>
 
-    <!-- 상세 뷰 -->
-    <div v-else class="detail-view">
-      <div class="detail-header">
-        <v-btn icon variant="text" @click="closeDetail" class="back-btn">
-          <v-icon size="24">mdi-arrow-left</v-icon>
-        </v-btn>
-        <div class="detail-title-area">
-          <h2 class="detail-title">{{ selectedDebate.title }}</h2>
-          <p class="detail-meta">
-            {{ selectedDebate.author }} • {{ selectedDebate.totalVotes }}명이 참여했습니다
-          </p>
-        </div>
-      </div>
-
-      <div class="detail-content">
-        <!-- 토론 설명 -->
-        <div class="debate-intro">
-          <div class="intro-left">
-            <p class="debate-desc">{{ selectedDebate.description }}</p>
-          </div>
-          <img :src="sproutMangchi" alt="Sprout Mangchi" class="detail-mascot" />
-        </div>
-
-        <!-- 투표 섹션 -->
-        <div class="voting-section">
-          <h3 class="voting-title">당신의 선택은?</h3>
-
-          <div class="voting-options">
-            <div class="vote-card vote-card-a" @click="participate(selectedDebate, 'A')">
-              <div class="vote-card-content">
-                <h4 class="vote-option-title">{{ selectedDebate.optionA }}</h4>
-                <div class="vote-stats">
-                  <span class="vote-count-large">{{ selectedDebate.votesA }}표</span>
-                  <span class="vote-percentage-large"
-                    >{{
-                      Math.round((selectedDebate.votesA / selectedDebate.totalVotes) * 100)
-                    }}%</span
-                  >
-                </div>
-              </div>
-              <div class="vote-progress-bar">
-                <div
-                  class="vote-progress-fill progress-a"
-                  :style="{
-                    width: `${(selectedDebate.votesA / selectedDebate.totalVotes) * 100}%`,
-                  }"
-                ></div>
-              </div>
-            </div>
-
-            <div class="vs-divider">
-              <span>VS</span>
-            </div>
-
-            <div class="vote-card vote-card-b" @click="participate(selectedDebate, 'B')">
-              <div class="vote-card-content">
-                <h4 class="vote-option-title">{{ selectedDebate.optionB }}</h4>
-                <div class="vote-stats">
-                  <span class="vote-count-large">{{ selectedDebate.votesB }}표</span>
-                  <span class="vote-percentage-large"
-                    >{{
-                      Math.round((selectedDebate.votesB / selectedDebate.totalVotes) * 100)
-                    }}%</span
-                  >
-                </div>
-              </div>
-              <div class="vote-progress-bar">
-                <div
-                  class="vote-progress-fill progress-b"
-                  :style="{
-                    width: `${(selectedDebate.votesB / selectedDebate.totalVotes) * 100}%`,
-                  }"
-                ></div>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <!-- 댓글 섹션 -->
-        <div class="comments-section">
-          <div class="comments-header">
-            <h3 class="comments-title">
-              <v-icon class="mr-2" color="#57C675">mdi-comment-multiple</v-icon>
-              Echo Whispers ({{ selectedDebate.comments }})
-            </h3>
-          </div>
-          <div class="comments-placeholder">
-            <div class="placeholder-content">
-              <v-icon size="48" color="#bdc3c7">mdi-comment-outline</v-icon>
-              <h4>댓글 시스템 준비 중입니다</h4>
-              <p>곧 ScentStalker들의 다양한 의견을 나눌 수 있습니다</p>
-            </div>
-          </div>
+        <!-- 토론이 없는 경우 -->
+        <div v-if="agoraStore.debates.length === 0" class="empty-state">
+          <img :src="sproutMangchi" alt="Sprout Mangchi" class="empty-mascot" />
+          <h3>아직 토론이 없습니다</h3>
+          <p>첫 번째 Echo Whisper를 시작해보세요!</p>
+          <v-btn @click="createDebate" color="#57C675" size="large" class="mt-4">
+            새 토론 시작하기
+          </v-btn>
         </div>
       </div>
     </div>
@@ -428,6 +283,12 @@ onMounted(async () => {
   margin-top: 16px;
   color: #718096;
   font-size: 1rem;
+}
+
+/* 에러 섹션 */
+.error-section {
+  text-align: center;
+  padding: 40px 20px;
 }
 
 /* 토론 그리드 */
@@ -564,231 +425,35 @@ onMounted(async () => {
   color: #4a5568;
 }
 
-/* 상세 뷰 */
-.detail-view {
-  max-width: 800px;
-  margin: 0 auto;
-  padding: 24px;
-}
-
-.detail-header {
-  display: flex;
-  align-items: flex-start;
-  gap: 16px;
+/* 빈 상태 */
+.empty-state {
+  grid-column: 1 / -1;
+  text-align: center;
+  padding: 80px 20px;
   background: white;
   border-radius: 16px;
-  padding: 24px;
-  margin-bottom: 24px;
-  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.06);
+  border: 2px dashed #e2e8f0;
 }
 
-.detail-title-area {
-  flex: 1;
-}
-
-.detail-title {
-  font-size: 1.5rem;
-  font-weight: 700;
-  color: #2d3748;
-  margin: 0 0 8px 0;
-  line-height: 1.3;
-  font-family: 'NanumBarunGothic', sans-serif;
-}
-
-.detail-meta {
-  color: #718096;
-  font-size: 0.875rem;
-  margin: 0;
-}
-
-.detail-content {
-  display: flex;
-  flex-direction: column;
-  gap: 24px;
-}
-
-.debate-intro {
-  background: white;
-  border-radius: 16px;
-  padding: 24px;
-  display: flex;
-  align-items: center;
-  gap: 20px;
-  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.06);
-}
-
-.intro-left {
-  flex: 1;
-}
-
-.debate-desc {
-  font-size: 1rem;
-  color: #4a5568;
-  line-height: 1.6;
-  margin: 0;
-}
-
-.detail-mascot {
+.empty-mascot {
   width: 80px;
   height: 80px;
   object-fit: contain;
+  margin-bottom: 20px;
 }
 
-/* 투표 섹션 */
-.voting-section {
-  background: white;
-  border-radius: 16px;
-  padding: 32px;
-  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.06);
-}
-
-.voting-title {
+.empty-state h3 {
   font-size: 1.25rem;
   font-weight: 700;
   color: #2d3748;
-  margin: 0 0 24px 0;
-  text-align: center;
+  margin-bottom: 8px;
   font-family: 'NanumBarunGothic', sans-serif;
 }
 
-.voting-options {
-  display: flex;
-  flex-direction: column;
-  gap: 16px;
-}
-
-.vote-card {
-  border: 2px solid #e2e8f0;
-  border-radius: 12px;
-  padding: 20px;
-  cursor: pointer;
-  transition: all 0.3s ease;
-  background: #fafafa;
-}
-
-.vote-card:hover {
-  border-color: #57c675;
-  transform: scale(1.02);
-  background: #f7fafc;
-}
-
-.vote-card-content {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 12px;
-}
-
-.vote-option-title {
-  font-size: 1.125rem;
-  font-weight: 700;
-  margin: 0;
-  font-family: 'NanumBarunGothic', sans-serif;
-}
-
-.vote-card-a .vote-option-title {
-  color: #57c675;
-}
-
-.vote-card-b .vote-option-title {
-  color: #6fb8f4;
-}
-
-.vote-stats {
-  text-align: right;
-}
-
-.vote-count-large {
-  display: block;
-  font-size: 0.875rem;
+.empty-state p {
   color: #718096;
-  margin-bottom: 4px;
-}
-
-.vote-percentage-large {
-  font-size: 1.5rem;
-  font-weight: 700;
-  color: #2d3748;
-}
-
-.vote-progress-bar {
-  height: 12px;
-  background: #e2e8f0;
-  border-radius: 6px;
-  overflow: hidden;
-}
-
-.vote-progress-fill {
-  height: 100%;
-  border-radius: 6px;
-  transition: width 0.3s ease;
-}
-
-.progress-a {
-  background: linear-gradient(90deg, #57c675, #68d391);
-}
-
-.progress-b {
-  background: linear-gradient(90deg, #6fb8f4, #90cdf4);
-}
-
-.vs-divider {
-  text-align: center;
-  margin: 8px 0;
-}
-
-.vs-divider span {
-  background: white;
-  color: #a0aec0;
-  font-weight: 700;
   font-size: 1rem;
-  padding: 8px 16px;
-  border: 2px solid #e2e8f0;
-  border-radius: 20px;
-}
-
-/* 댓글 섹션 */
-.comments-section {
-  background: white;
-  border-radius: 16px;
-  padding: 32px;
-  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.06);
-}
-
-.comments-header {
-  margin-bottom: 24px;
-}
-
-.comments-title {
-  font-size: 1.25rem;
-  font-weight: 700;
-  color: #2d3748;
-  margin: 0;
-  display: flex;
-  align-items: center;
-  font-family: 'NanumBarunGothic', sans-serif;
-}
-
-.comments-placeholder {
-  text-align: center;
-  padding: 60px 20px;
-  border: 2px dashed #e2e8f0;
-  border-radius: 12px;
-  background: #f8fafc;
-}
-
-.placeholder-content h4 {
-  color: #4a5568;
-  font-size: 1.125rem;
-  font-weight: 600;
-  margin: 16px 0 8px 0;
-  font-family: 'NanumBarunGothic', sans-serif;
-}
-
-.placeholder-content p {
-  color: #718096;
-  font-size: 0.875rem;
-  margin: 0;
+  margin-bottom: 0;
 }
 
 /* 반응형 디자인 */
@@ -812,42 +477,19 @@ onMounted(async () => {
   .agora-description {
     margin-right: 0;
   }
-
-  .debate-intro {
-    flex-direction: column;
-    text-align: center;
-  }
-
-  .vote-card-content {
-    flex-direction: column;
-    gap: 8px;
-    text-align: center;
-  }
-
-  .vote-stats {
-    text-align: center;
-  }
 }
 
 @media (max-width: 480px) {
-  .main-view,
-  .detail-view {
+  .main-view {
     padding: 16px;
   }
 
-  .header-section,
-  .debate-intro,
-  .voting-section,
-  .comments-section {
+  .header-section {
     padding: 20px;
   }
 
   .page-title {
     font-size: 1.75rem;
-  }
-
-  .detail-title {
-    font-size: 1.25rem;
   }
 }
 </style>

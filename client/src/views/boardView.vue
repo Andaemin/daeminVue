@@ -16,6 +16,11 @@ const posts = ref([])
 const loading = ref(true)
 const error = ref(null)
 
+// 페이지네이션 상태
+const currentPage = ref(1)
+const itemsPerPage = 8 // 페이지당 8개 게시글
+const totalPosts = ref(0)
+
 // 현재 카테고리 정보
 const currentCategory = computed(() => {
   return getCategoryByKey(route.params.category)
@@ -25,18 +30,36 @@ const categoryTitle = computed(() => {
   return currentCategory.value ? currentCategory.value.name : '게시판'
 })
 
+// 전체 페이지 수 계산
+const totalPages = computed(() => {
+  return Math.ceil(totalPosts.value / itemsPerPage)
+})
+
+// 현재 페이지의 게시글들
+const paginatedPosts = computed(() => {
+  const start = (currentPage.value - 1) * itemsPerPage
+  const end = start + itemsPerPage
+  return posts.value.slice(start, end)
+})
+
 // 게시글 불러오기
 const fetchPosts = async () => {
   try {
     loading.value = true
     const res = await axios.get('/api/posts')
-    // 현재 카테고리에 해당하는 게시글만 필터링
-    const filteredPosts = res.data.filter((post) => post.category === route.params.category)
-    posts.value = filteredPosts
 
-    // 좋아요 정보 배치 로드
+    // 현재 카테고리에 해당하는 게시글만 필터링 후 최신순 정렬
+    const filteredPosts = res.data
+      .filter((post) => post.category === route.params.category)
+      .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt)) // 최신글 먼저
+
+    posts.value = filteredPosts
+    totalPosts.value = filteredPosts.length
+
+    // 좋아요 정보 배치 로드 (현재 페이지 게시글만)
     if (filteredPosts.length > 0) {
-      const postIds = filteredPosts.map((post) => post.id)
+      const currentPagePosts = paginatedPosts.value
+      const postIds = currentPagePosts.map((post) => post.id)
       await likeStore.loadLikesForPosts(postIds, loginStore.token)
     }
   } catch (err) {
@@ -45,6 +68,23 @@ const fetchPosts = async () => {
   } finally {
     loading.value = false
   }
+}
+
+// 페이지 변경
+const changePage = async (page) => {
+  if (page < 1 || page > totalPages.value) return
+
+  currentPage.value = page
+
+  // 새 페이지의 좋아요 정보 로드
+  const currentPagePosts = paginatedPosts.value
+  if (currentPagePosts.length > 0) {
+    const postIds = currentPagePosts.map((post) => post.id)
+    await likeStore.loadLikesForPosts(postIds, loginStore.token)
+  }
+
+  // 페이지 상단으로 스크롤
+  window.scrollTo({ top: 0, behavior: 'smooth' })
 }
 
 // 게시글 상세로 이동
@@ -63,7 +103,7 @@ const goToForum = () => {
   router.push({ name: 'forum' })
 }
 
-// 글쓰기 (임시)
+// 글쓰기
 const writePost = () => {
   router.push({
     name: 'writePostCategory',
@@ -99,7 +139,12 @@ onMounted(fetchPosts)
               ></v-avatar>
               {{ categoryTitle }}
             </h1>
-            <p class="text-subtitle-1 text-grey-darken-1 mt-1">{{ posts.length }}개의 게시글</p>
+            <p class="text-subtitle-1 text-grey-darken-1 mt-1">
+              총 {{ totalPosts }}개의 게시글
+              <span v-if="totalPages > 1" class="ml-2">
+                ({{ currentPage }}/{{ totalPages }} 페이지)
+              </span>
+            </p>
           </div>
         </div>
 
@@ -132,9 +177,9 @@ onMounted(fetchPosts)
         <v-btn color="primary" @click="writePost"> 첫 게시글 작성하기 </v-btn>
       </v-sheet>
 
-      <!-- 게시글 카드들 -->
+      <!-- 게시글 카드들 (현재 페이지만 표시) -->
       <v-row v-else>
-        <v-col v-for="post in posts" :key="post.id" cols="12" md="6">
+        <v-col v-for="post in paginatedPosts" :key="post.id" cols="12" md="6">
           <v-card
             class="mb-4 post-card"
             elevation="2"
@@ -143,11 +188,27 @@ onMounted(fetchPosts)
           >
             <v-card-title class="text-h6 d-flex justify-space-between align-center">
               <span>{{ post.title }}</span>
-              <v-chip size="small" :color="currentCategory?.color || '#CCCCCC'" text-color="white">
-                {{ categoryTitle }}
-              </v-chip>
+              <div class="d-flex align-center">
+                <!-- 최신글 표시 (24시간 이내) -->
+                <v-chip
+                  v-if="Date.now() - new Date(post.createdAt).getTime() < 24 * 60 * 60 * 1000"
+                  size="x-small"
+                  color="red"
+                  text-color="white"
+                  class="mr-2"
+                >
+                  NEW
+                </v-chip>
+                <v-chip
+                  size="small"
+                  :color="currentCategory?.color || '#CCCCCC'"
+                  text-color="white"
+                >
+                  {{ categoryTitle }}
+                </v-chip>
+              </div>
             </v-card-title>
-            <!-- v-card-subtitle 부분만 수정 -->
+
             <v-card-subtitle class="text-subtitle-2 d-flex align-center flex-wrap gap-1 pb-2">
               <v-icon size="16" class="mr-1">
                 {{ post.isAnonymous ? 'mdi-incognito' : 'mdi-account' }}
@@ -198,12 +259,43 @@ onMounted(fetchPosts)
               <v-spacer></v-spacer>
 
               <span class="text-caption text-grey">
-                {{ new Date(post.createdAt).toLocaleDateString('ko-KR') }}
+                {{
+                  new Date(post.createdAt).toLocaleDateString('ko-KR', {
+                    month: 'short',
+                    day: 'numeric',
+                    hour: '2-digit',
+                    minute: '2-digit',
+                  })
+                }}
               </span>
             </v-card-actions>
           </v-card>
         </v-col>
       </v-row>
+
+      <!-- 페이지네이션 -->
+      <div v-if="totalPages > 1" class="d-flex justify-center mt-6 mb-4">
+        <v-pagination
+          v-model="currentPage"
+          :length="totalPages"
+          :total-visible="7"
+          variant="elevated"
+          color="primary"
+          @update:model-value="changePage"
+          class="pagination-custom"
+        />
+      </div>
+
+      <!-- 페이지 정보 -->
+      <div v-if="totalPages > 1" class="text-center mt-4 mb-6">
+        <v-chip size="small" color="grey-lighten-2" class="mx-1">
+          <v-icon start size="16">mdi-file-document-outline</v-icon>
+          {{ (currentPage - 1) * itemsPerPage + 1 }}-{{
+            Math.min(currentPage * itemsPerPage, totalPosts)
+          }}
+          / {{ totalPosts }}개
+        </v-chip>
+      </div>
     </div>
   </v-container>
 </template>
@@ -218,5 +310,26 @@ onMounted(fetchPosts)
 .post-card:hover {
   transform: translateY(-2px);
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+/* 페이지네이션 커스텀 스타일 */
+.pagination-custom {
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  border-radius: 8px;
+}
+
+/* NEW 뱃지 애니메이션 */
+.v-chip[color='red'] {
+  animation: newBadgePulse 2s ease-in-out infinite;
+}
+
+@keyframes newBadgePulse {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.7;
+  }
 }
 </style>

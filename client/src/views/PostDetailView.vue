@@ -3,9 +3,12 @@ import { onMounted, ref, computed } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import HeaderNav from '@/components/layouts/HeaderNav.vue'
 import LikeBtn from '@/components/base/LikeBtn.vue'
+import SproutBadge from '@/components/base/SproutBadge.vue'
+import BadgeCollection from '@/components/base/BadgeCollection.vue'
 import { getCategoryByKey } from '@/data/chipCategories.js'
 import { useLikeStore } from '@/store/likeStore'
 import { useLoginStore } from '@/store/login'
+import { useBadgeStore } from '@/store/badgeStore'
 import userDefault from '@/assets/user_default.png'
 import axios from 'axios'
 
@@ -13,14 +16,41 @@ const route = useRoute()
 const router = useRouter()
 const likeStore = useLikeStore()
 const loginStore = useLoginStore()
+const badgeStore = useBadgeStore()
 
 const post = ref(null)
 const loading = ref(true)
 const error = ref('')
+const authorBadges = ref([])
 
 // 카테고리 정보
 const categoryInfo = computed(() => {
   return post.value ? getCategoryByKey(post.value.category) : null
+})
+
+// 작성자의 모든 뱃지 (희귀도 순 정렬)
+const sortedAuthorBadges = computed(() => {
+  if (post.value?.isAnonymous || !Array.isArray(authorBadges.value) || !authorBadges.value.length) {
+    return []
+  }
+
+  // 희귀도 순서 정의
+  const rarityOrder = {
+    legendary: 5,
+    epic: 4,
+    rare: 3,
+    uncommon: 2,
+    common: 1,
+  }
+
+  // 안전하게 복사한 후 정렬
+  return [...authorBadges.value]
+    .filter((badge) => badge && typeof badge === 'object')
+    .sort((a, b) => {
+      const rarityA = rarityOrder[a.rarity] || 0
+      const rarityB = rarityOrder[b.rarity] || 0
+      return rarityB - rarityA
+    })
 })
 
 // 게시글 로드
@@ -29,12 +59,40 @@ const loadPost = async () => {
     loading.value = true
     const res = await axios.get(`/api/posts/${route.params.id}`)
     post.value = res.data
+
+    // 좋아요 정보 로드
     await likeStore.loadLikesForPost(route.params.id, loginStore.token)
+
+    // 작성자 뱃지 로드 (익명이 아닌 경우만)
+    if (!post.value.isAnonymous && post.value.userId) {
+      await loadAuthorBadges(post.value.userId)
+    }
   } catch (err) {
     error.value = '게시글을 불러오는 데 실패했습니다.'
     console.error('게시글 로딩 실패:', err)
   } finally {
     loading.value = false
+  }
+}
+
+// 작성자 뱃지 로드
+const loadAuthorBadges = async (userId) => {
+  try {
+    console.log('작성자 뱃지 로드 시작:', userId)
+    const badges = await badgeStore.loadUserBadges(userId, loginStore.token)
+    console.log('로드된 뱃지:', badges)
+
+    // 안전하게 배열 확인 후 할당
+    if (Array.isArray(badges)) {
+      authorBadges.value = badges.filter((badge) => badge?.isVisible !== false)
+    } else {
+      authorBadges.value = []
+    }
+
+    console.log('최종 authorBadges:', authorBadges.value)
+  } catch (err) {
+    console.error('작성자 뱃지 로드 실패:', err)
+    authorBadges.value = []
   }
 }
 
@@ -152,18 +210,35 @@ onMounted(() => {
                 </h1>
 
                 <!-- 메타 정보 -->
-                <!-- 메타 정보 부분 수정 -->
                 <div class="d-flex align-center mb-4 pb-4 border-bottom">
                   <v-avatar size="36" class="mr-3">
                     <v-img :src="post.author?.profileImage || userDefault" />
                   </v-avatar>
                   <div class="flex-grow-1">
-                    <div class="font-weight-medium mb-2">
-                      {{
-                        post.isAnonymous
-                          ? '익명의 SproutFinder'
-                          : post.author?.name || post.authorName
-                      }}
+                    <!-- 작성자 이름과 뱃지를 한 줄에 자연스럽게 배치 -->
+                    <div class="d-flex align-center flex-wrap mb-2">
+                      <span class="font-weight-bold author-name mr-2">
+                        {{
+                          post.isAnonymous
+                            ? '익명의 SproutFinder'
+                            : post.author?.name || post.authorName
+                        }}
+                      </span>
+
+                      <!-- 모든 보유 뱃지 표시 (익명이 아닌 경우만) -->
+                      <div
+                        v-if="!post.isAnonymous && sortedAuthorBadges.length"
+                        class="d-flex align-center flex-wrap"
+                      >
+                        <!-- 직접 뱃지 렌더링 -->
+                        <div
+                          v-for="badge in sortedAuthorBadges"
+                          :key="badge.badgeType || badge.id"
+                          class="badge-item"
+                        >
+                          <SproutBadge :badge="badge" size="small" />
+                        </div>
+                      </div>
                     </div>
 
                     <!-- 작성자 정보 태그들 -->
@@ -227,10 +302,24 @@ onMounted(() => {
                 <v-avatar size="64" class="mb-3">
                   <v-img :src="post.author?.profileImage || userDefault" />
                 </v-avatar>
-                <div class="font-weight-bold mb-2">
+                <div class="font-weight-bold mb-2 author-name">
                   {{
                     post.isAnonymous ? '익명의 SproutFinder' : post.author?.name || post.authorName
                   }}
+                </div>
+
+                <!-- 작성자 뱃지 컬렉션 (익명이 아닌 경우만) -->
+                <div v-if="!post.isAnonymous && sortedAuthorBadges.length" class="mb-3">
+                  <div class="text-caption text-grey mb-2">보유 뱃지</div>
+                  <div class="d-flex flex-wrap">
+                    <div
+                      v-for="badge in sortedAuthorBadges"
+                      :key="badge.badgeType || badge.id"
+                      class="badge-item mr-1 mb-1"
+                    >
+                      <SproutBadge :badge="badge" size="small" />
+                    </div>
+                  </div>
                 </div>
 
                 <!-- 사이드바 태그들 -->
@@ -318,6 +407,18 @@ onMounted(() => {
 /* 나눔바른고딕 폰트 적용 */
 * {
   font-family: 'NanumBarunGothic', sans-serif !important;
+}
+
+/* 작성자 이름 스타일링 */
+.author-name {
+  font-size: 1rem;
+  color: #2d3748;
+}
+
+/* 뱃지 자연스러운 배치 */
+.badge-item {
+  margin: 0 4px 4px 0;
+  display: inline-block;
 }
 
 /* 스크롤바 스타일링 */
