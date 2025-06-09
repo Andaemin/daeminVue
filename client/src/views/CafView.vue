@@ -84,11 +84,23 @@ const worldPeople = [
 
 // 기업 로고 데이터
 const greatRoasteries = [
-  { name: 'Starbucks', logo: '/src/assets/starbucks_logo.svg', url: '/CafInfo/starbucks' },
-  { name: 'Tom&Toms', logo: '/src/assets/TomandToms_logo.svg', url: '/CafInfo/tomntoms' },
-  { name: 'EDIYA', logo: '/src/assets/EDIYA_logo.svg', url: '/CafInfo/ediya' },
-  { name: 'A Twosome Place', logo: '/src/assets/twosome_logo.svg', url: '/CafInfo/twosome' },
-  { name: 'Blue Bottle', logo: '/src/assets/bluebottle_logo.svg', url: '/CafInfo/bluebottle' },
+  {
+    name: 'Starbucks',
+    logo: '/src/assets/starbucks_logo.svg',
+    url: 'https://www.starbucks.co.kr/index.do',
+  },
+  { name: 'Tom&Toms', logo: '/src/assets/TomandToms_logo.svg', url: 'https://www.tomntoms.com/' },
+  { name: 'EDIYA', logo: '/src/assets/EDIYA_logo.svg', url: 'https://www.ediya.com/' },
+  {
+    name: 'A Twosome Place',
+    logo: '/src/assets/twosome_logo.svg',
+    url: 'https://www.twosome.co.kr/main.do',
+  },
+  {
+    name: 'Blue Bottle',
+    logo: '/src/assets/bluebottle_logo.svg',
+    url: 'https://kr.bluebottlecoffee.com/',
+  },
   { name: '명지대학교 블루포트', logo: portMyeongji, url: 'https://www.mjc.ac.kr', external: true },
 ]
 
@@ -253,7 +265,8 @@ onUnmounted(() => {
     <section id="hero" class="hero-section">
       <div class="hero-content">
         <h1 class="hero-title">
-          <span class="brand-caf">CaF</span><span class="brand-verse">Verse</span>
+          <span class="brand-caf green-nanum">CaF</span
+          ><span class="brand-verse blue-nanum">Verse</span>
         </h1>
         <p class="hero-subtitle">커피라는 창조물에서 피어나는 무한한 세계</p>
         <div class="hero-mascot">
@@ -340,10 +353,12 @@ onUnmounted(() => {
     <!-- GreatRoasteries Section -->
     <section id="roasteries" class="roasteries-section">
       <div class="section-content">
-        <h2 class="section-title">GreatRoasteries</h2>
+        <h2 class="section-title">
+          <span class="blue-2">Great</span><span class="green-2">Roasteries</span>
+        </h2>
         <p class="section-description">
-          우리 커피를 널리 알린 사람들이예요! 아마 SproutFinder들이 이 분들 영향을 많이
-          받았겠죠??<br />
+          우리 커피를 널리 알린 사람들이예요! 아마 <span class="blue">SproutFinder</span>들이 이
+          분들 영향을 많이 받았겠죠??<br />
           이들의 이야기 궁금하지 않아요?
         </p>
 
@@ -367,15 +382,16 @@ onUnmounted(() => {
     <section id="finale" class="finale-section">
       <div class="section-content">
         <img :src="sproutSmile" alt="Happy SproutCreature" class="finale-mascot" />
-        <h2 class="section-title">CaFverse에서 만나요!</h2>
+        <h2 class="section-title">
+          <span class="green-nanum">CaF</span><span class="blue-nanum">verse</span>에서 만나요!
+        </h2>
         <p class="section-description">
-          당신도 SproutFinder가 되어 CaFverse를 밝혀주길 간절히 바래요!
+          당신도 <span class="blue">SproutFinder</span>가 되어 <span class="green">CaF</span
+          ><span class="blue">verse</span>를 밝혀주길 간절히 바래요!
         </p>
-
-        <v-btn @click="goToHome" size="x-large" color="#57C675" class="journey-btn">
-          <v-icon class="mr-2">mdi-rocket-launch</v-icon>
-          여정 시작하기
-        </v-btn>
+        <v-btn @click="goToHome" size="x-large" color="#57C675" class="journey-btn"
+          >여정 시작하기</v-btn
+        >
       </div>
     </section>
   </div>

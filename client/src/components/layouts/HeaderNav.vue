@@ -53,9 +53,9 @@ const navItems = [
     route: { name: 'agora' },
   },
   {
-    title: 'Write',
+    title: 'CafInfo',
     icon: 'mdi-pencil',
-    route: { name: 'writepost' },
+    route: { name: 'cafInfo' },
   },
 ]
 

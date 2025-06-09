@@ -60,16 +60,50 @@ span.bold {
 span.green {
   color: #57c675;
 }
-
+span.deepgreen {
+  color: #72b967;
+  border: 1px;
+  background-color: rgb(239, 251, 255);
+  padding: 5px;
+  border-radius: 15px;
+}
 span.blue {
   color: #6fb8f4;
 }
 span.white {
   color: #e0e0e0;
 }
+span.blue-nanum {
+  color: #6fb8f4;
+  font-family: 'NanumSquareNeo';
+  src: url('../assets/fonts/NanumSquareNeo-eHv.ttf') format('truetype');
+  font-weight: bolder;
+}
+span.green-nanum {
+  color: #57c675;
+  font-family: 'NanumSquareNeo';
+  src: url('../assets/fonts/NanumSquareNeo-eHv.ttf') format('truetype');
+  font-weight: bolder;
+}
 
 span.blue-2 {
-  color: #5794e9;
+  color: #6ba2ef;
+  font-family: 'NanumSquareNeo';
+  src: url('../assets/fonts/NanumSquareNeo-eHv.ttf') format('truetype');
+  font-weight: bolder;
+}
+span.orenge {
+  color: #e8c259;
+}
+span.orenge-nanum {
+  color: #e8c259;
+  font-family: 'NanumSquareNeo';
+  src: url('../assets/fonts/NanumSquareNeo-eHv.ttf') format('truetype');
+  font-weight: bolder;
+}
+
+span.green-2 {
+  color: #6bc46c;
   font-family: 'NanumSquareNeo';
   src: url('../assets/fonts/NanumSquareNeo-eHv.ttf') format('truetype');
   font-weight: bolder;
