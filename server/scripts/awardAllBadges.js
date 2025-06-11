@@ -122,7 +122,7 @@ async function awardAllBadgesToUser(userIdentifier) {
 // awardAllBadgesToUser('nayeoni')
 
 // 3. nickname으로 찾기
-awardAllBadgesToUser("nayeoni"); // 또는 임나연님의 실제 닉네임
+awardAllBadgesToUser("soobin"); // 또는 임나연님의 실제 닉네임
 
 // 스크립트 실행
 // node server/scripts/awardAllBadges.js
