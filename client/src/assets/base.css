@@ -67,6 +67,9 @@ span.deepgreen {
   padding: 5px;
   border-radius: 15px;
 }
+span.black {
+  color: #000000;
+}
 span.blue {
   color: #6fb8f4;
 }
